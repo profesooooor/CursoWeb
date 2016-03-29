@@ -1,0 +1,12 @@
+En esta carpeta se van a mostrar cosas que los alumnos no van a hacer, sirven únicamente para que tengan una idea de lo que es posible hacer.
+Tal vez alguno de estos se utilice algún día en el futuro para que, partiendo de algo hecho, modifiquen o aprovechen fragmentos.
+
+Breve descripción de estos trabajos:
+
+crono. Se trata de una aplicación táctil que utiliza las bibliotecas touch.js y zepto.min.js para emplear eventos táctiles. A las bibliotecas se las llama en modo local para que funcione incluso sin acceso a Internet.
+
+dibuja_y_arrastra. Es una App táctil que funciona en Windows 10 (no la he probado en Android aún). Permite arrastrar un objeto por la pantalla y también dibujar con hasta 10 dedos al mismo tiempo.
+
+reloj. Se trata de una aplicación con gráficos SVG empaquetada para poderse instalar en FirefoxOS (hosted). Se debería preparar un "manifest" diferente para poderse instalar como un complemento (muy tonto) de Chrome o como una App de Android.
+
+adaptativa. Se trata de una página web que se adapta a cualquier pantalla. Nombre original:"leccion4_flexbox_el_disenyo_del_santo_grial.html" (UDACITY y otras fuentes).

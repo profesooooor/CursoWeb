@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>CRONOMETRO CON PARADAS Y EVENTOS TÁCTILES</title>
+		<script type="text/javascript" src="zepto.min.js">    </script>
+		<script type="text/javascript" src="touch.js" ></script>
+	<style type="text/css">
+
+#crono {
+	height: 280px;
+	//width: 200px;
+	background-image: url('crono.png');
+	background-size: 320px;
+	background-repeat:no-repeat;
+	color: yellow;
+	padding-top: 170px;
+	padding-left:100px;
+	font-size: 80px;
+}	
+
+h3 {
+	position:absolute;
+	top:150px;
+	left:400px;
+	font-family:algerian,courier;"
+	}
+
+#instrucciones {
+	color: blue;
+	}
+	
+	</style>
+<script type="text/javascript"> 
+  $(function(){
+	var t, cl = $("#crono"), paradas = $("#paradas");
+    
+    localStorage.paradas=(localStorage.paradas||"");
+    paradas.html(localStorage.paradas);
+
+		function mostrar()  { cl.html((+cl.html() + 0.1).toFixed(1)); };
+		function arrancar() { t=setInterval(mostrar, 100);};
+		function parar()  {
+		  clearInterval(t);
+		  t=undefined;
+		  paradas.html(paradas.html()+"<br>"+cl.html());
+		  localStorage.paradas=paradas.html();
+        };		
+		function cambiar()  { if (!t) arrancar(); else parar(); };
+		function inicializar() {
+      if (t===undefined) {cl.html("0.0"); paradas.html(""); localStorage.paradas=""; };
+    }
+	
+		//cl.on('click', cambiar);  // Si activo esto se para sólo el crono a las 3 décimas de haber arrancado
+		//cl.on('dblclick', inicializar);
+		cl.on('tap', cambiar);
+		cl.on('swipe', inicializar);
+
+    $("#cambiar").on('click', cambiar);
+    $("#inicializar").on('click', inicializar);
+
+		
+  });
+</script>
+</head>
+<body>
+
+    <h2><div id="crono"> 0.0 </div> </h2>
+
+<div id="instrucciones">
+		UN TOQUE SOBRE EL CRONO LO ARRANCA O PARA <br>
+		UN BARRIDO CON EL DEDO SOBRE EL CRONO LO INICIALIZA. <b>NO FUNCIONA CON MICROSOFT EDGE</b> <br> <br>
+</div>
+		<h3>
+      PARADAS: 
+	  
+    <div id="paradas"> </div>
+</h3>
+
+   
+    <button type="button" id="cambiar"> arrancar/parar </button>
+    <button type="button" id="inicializar"> inicializar </button>    
+
+El trabajo original se llama Mod6EjeObli.html  
+</body>
+</html>
