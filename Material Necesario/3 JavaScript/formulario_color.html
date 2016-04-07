@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta  content="text/html; charset=UTF-8"  http-equiv="content-type">
+    <title> Prueba de Formulario para seleccionar un color</title>
+    <meta  content="Pedro Felip Belenguer"  name="author">
+  </head>
+  <body bgcolor="white">
+    <script>
+        function fondo(color) {document.bgColor = color;}
+        function fondoPaleta() {document.bgColor=document.getElementById("paleta").value;}
+    </script>
+    <h1>Prueba de Formulario para seleccionar un color</h1>
+    <p>
+    El último botón no funciona en todos los navegadores. </br>
+    Sirve para sacar la paleta de colores.
+    </p>
+    <CENTER>
+      <FORM>
+        <INPUT TYPE="button" VALUE="Rojo" onClick="fondo('RED')">
+        <INPUT TYPE="button" VALUE="Azul" onClick="fondo('BLUE')">
+        <INPUT TYPE="button" VALUE="Naranja" onClick="fondo('ORANGE')">
+        <INPUT TYPE="button" VALUE="Verde" onClick="fondo('GREEN')">
+        <INPUT TYPE="button" VALUE="Negro" onClick="fondo('BLACK')">
+        <INPUT TYPE="button" VALUE="Gris" onClick="fondo('GRAY')">
+        <INPUT TYPE="button" VALUE="Amarillo" onClick="fondo('YELLOW')">
+        <INPUT TYPE="button" VALUE="Blanco" onClick="fondo('WHITE')">
+        <input id="paleta" type="color" value="#aaaaaa" onChange="fondoPaleta()">
+      </FORM>
+    </center>
+  </body>
+</html>
