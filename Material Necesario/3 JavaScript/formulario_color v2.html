@@ -4,13 +4,22 @@
     <meta  content="text/html; charset=UTF-8"  http-equiv="content-type">
     <title> Prueba de Formulario para seleccionar un color</title>
     <meta  content="Pedro Felip Belenguer"  name="author">
+    <script src='spectrum.js'></script>
+    <link rel='stylesheet' href='spectrum.css' />
   </head>
   <body bgcolor="white">
     <script>
         function fondo(color) {document.bgColor = color;}
         function fondoPaleta() {document.bgColor=document.getElementById("paleta").value;}
+
+    </script>
+    <script>
+    $("#paleta").spectrum({
+        color: "#f00"
+    });
     </script>
     <h1>Prueba de Formulario para seleccionar un color</h1>
+    <h2>ESTO TODAVIA NO FUNCIONA. Tendré que revisar lo del polyfill este.</h2>
     <CENTER>
       Pulsa el botón que quieras y cambiará el color del fondo.
       <FORM>
@@ -28,7 +37,8 @@
         <br>
         <fieldset>
           <legend>Paleta de colores (no funciona en Microsoft Edge)</legend>
-        <input id="paleta" type="color" value="#aaaaaa" onChange="fondoPaleta()">
+        <input id="paletahtml5" type="color" value="#aaaaaa" onChange="fondoPaleta()">
+        <input id="paleta" type="text" />
         </fieldset>
         </br>
         <br>

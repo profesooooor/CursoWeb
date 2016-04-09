@@ -1,6 +1,7 @@
 # Curso de Diseño de Páginas Web
 
 - [Introducción](#Introducción)
+- [Cómo Descargar para usar](#Descarga)
 - [Material Necesario](#Material Necesario)
 - [Ejemplos Avanzados](#Ejemplos Avanzados)
 
@@ -21,6 +22,10 @@ En JavaScript se estudian ejemplos listos para usar:
 - Se trabaja con sensores.
 - Se introduce al desarrollo de juegos.
 
+## Descarga
+
+Para utilizar este material necesitas descargarlo. Busca arriba a la derecha el botón "Download ZIP" y descárgatelo todo.
+Si eres usuario de github puedes preferir hacer un "git clone".
 
 ## Material Necesario
 
