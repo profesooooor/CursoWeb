@@ -1,0 +1,64 @@
+h1 {  
+  font-family: Helvetica, Geneva, Arial, SunSans-Regular, sans-serif;
+}
+
+p {  
+  font-family: arial, verdana;  
+  color: white;  
+  background-color: black;
+}
+
+body {  
+  padding-left: 11em;  
+  font-family: Georgia, "Times New Roman", Times, serif;  
+  color: #006600;  
+  background-color: #d8da3d;
+}
+
+ul.menuizq {  
+  list-style-type: none;  
+  padding-top: 0px;  
+  padding-right: 0px;  
+  padding-bottom: 0px;  
+  padding-left: 0px;  
+  margin-top: 0px;  
+  margin-right: 0px;  
+  margin-bottom: 0px;  
+  margin-left: 0px;  
+  position: absolute;  
+  top: 2em;  
+  left: 1em;  
+  width: 9em;
+}
+
+ul.menuizq li {  
+  background-color: white;  
+  background-image: none;  
+  background-repeat: repeat;  
+  background-attachment: scroll;  
+  background-position: 0% 0%;  
+  margin-top: 0.5em;  
+  margin-right: 0px;  
+  margin-bottom: 0.5em;  
+  margin-left: 0px;  
+  padding-top: 0.3em;  
+  padding-right: 0.3em;  
+  padding-bottom: 0.3em;  
+  padding-left: 0.3em;  
+  border-right-width: 1em;  
+  border-right-style: solid;  
+  border-right-color: black;
+}
+
+ul.menuizq a {  
+  text-decoration: none;
+}
+
+a:link {  
+  color: blue;
+}
+
+a:visited {  
+  color: purple;
+}
+

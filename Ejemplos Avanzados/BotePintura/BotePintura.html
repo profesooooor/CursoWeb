@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Bote de Pintura</title>
+		<!-- El favicon no funciona en Edge, al menos -->
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script> -->
+		<meta name="viewport" content="width=device-width">
+		<script src="pep.js"></script>
+		<script type="text/javascript" src="BotePintura.js"> </script>
+		<style type="text/css">
+        #paleta{
+           border: #000 solid 2px;
+					 background-color: rgba(50,50,0,0.5);
+           position: absolute;
+           top: 200px;
+           left: 850px; //Me gustaría que fuera relativo al márgen derecho.
+        }
+    </style>
+    </head>
+<body>
+    <!-- <h1> Bote de pintura </h1> -->
+    <canvas width="800" height="500" style="border: #000 solid 3px; " id="objeto" touch-action="none" >
+    </canvas>
+		<div id="paleta" touch-action="none">
+				<img id="arrastrar" src="assets/arrastrar.png" width=100>
+				<img id="boteAzul" src="boteAzul.png" width=100>
+				<img id="boteRojo" src="boteRojo.png" width=100>
+				<img id="boteVerde" src="boteVerde.png" width=100>
+				<img id="muelle" src="assets/muelle.png" width=50>
+				<img id="mas" src="assets/mas.png" width=50>
+				<img id="menos" src="assets/menos.png" width=50>
+		</div>
+		<div id="escribe"></div>
+
+</body>
+</html>

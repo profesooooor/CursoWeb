@@ -1,0 +1,6 @@
+crono.
+
+Nombres originales de los archivos:
+crono.png
+Mod6EjeObli - local.html
+zepto.min.js

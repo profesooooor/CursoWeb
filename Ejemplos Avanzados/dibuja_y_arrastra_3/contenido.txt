@@ -1,0 +1,5 @@
+dibuja y arrastra 3.
+
+Nombres originales de los archivos:
+leccion8_3_pointerEvents.html
+leccion8_3_pointerEvents.js

@@ -1,0 +1,41 @@
+// index.css
+// Menú horizontal
+
+
+
+      h1 {
+        font-family: Helvetica, Geneva, Arial,
+          SunSans-Regular, sans-serif }
+      p {
+        font-Family:arial,verdana;
+        color: white;
+        background-color: black }
+
+      body {
+/*        padding-left: 11em; */
+        font-family: Georgia, "Times New Roman", Times, serif;
+/*        color: purple; */
+        background-color: #d8da3d
+        }
+
+      ul.menuizq {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+/*        position: absolute;
+        top: 2em;
+        left: 1em;
+        width: 9em */
+}
+      ul.menuizq li {
+        background: white;
+        margin: 0.5em 0;
+        padding: 0.3em;
+        border-right: 0.5em solid black }
+      ul.menuizq a {
+        text-decoration: none }
+      a:link {
+        color: blue }
+      a:visited {
+        color: purple }
+

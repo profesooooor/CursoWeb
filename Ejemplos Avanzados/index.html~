@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta  content="text/html; charset=UTF-8" http-equiv="content-type">
+    <title>MOOC Udacity Mobile Web Developement - leccion4_flexbox_el_disenyo_del_santo_grial</title>
+    <meta  content="Pedro Felip Belenguer"  name="author">
+    <meta  name="viewport"  content="width=device-width, initial-scale=1">
+    <style>
+    /*
+        Android requiere -webkit.
+        Edge reconoce todo: con y sin -webkit.
+    */
+
+        /* page es toda la página, todo el body */
+        #page {
+            display:        flex;
+            flex-direction: column;
+            display:        -webkit-flex;
+            -webkit-flex-direction: column;
+            /* Ocupar todo aunque no esté lleno de contenido */
+            height:         100vh;
+        }
+        header, footer {
+            padding-left:    20px; /* Si no meto h1 dentro, poner padding:20px */
+            background: #666;
+            color:      white;
+            border:     1px solid #eebb55;
+            border-radius: 7pt;
+        }
+        /* main es lo principal: todo menos header y footer */
+        #main {
+            display:    flex;
+            display:    -webkit-flex;
+            flex-grow:  1;
+        }
+        nav {
+            background: honeydew;
+            width:      120px;
+            border:     1px solid #eebb55;
+            border-radius: 7pt;
+            padding: 2px;
+        }
+        .contenido {
+            background: lightblue;
+            border:     1px solid #eebb55;
+            border-radius: 7pt;
+            flex-grow:  1; /* Ocupa todo lo que no esté reservado */
+        }
+        article {
+          padding: 5px;
+        }
+        aside {
+            background: peachpuff;
+            width:      120px;
+            border:     1px solid #eebb55;
+            border-radius: 7pt;
+            padding: 2px;
+        }
+        @media (max-width: 600px) {
+            /*
+                Con un ancho de pantalla pequeño lo que vamos a hacer es poner una
+                cosa debajo de otra.
+                Cada elemento ocupará todo el ancho, pero sin salirse del "parent",
+                por eso no ponemos 100vh sino auto.
+            */
+            /*
+                También podríamos hacer @media (orientation:landscape) o combinar ambos
+            */
+            #main {
+                flex-direction: column;
+                -webkit-flex-direction: column;
+            }
+            nav {
+                width: auto;
+            }
+            .contenido {
+              order: -1;
+              width: auto;
+            }
+            aside {
+                width: auto;
+            }
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="index.css">
+  </head>
+  <body>
+    <div id="page">
+        <header>
+            <h1> Ejemplos Avanzados </h1>
+        </header>
+        <div id="main">
+            <nav>
+              <ul class="menuizq" >
+                <li> <a href="crono/crono.html"> crono </a> </li>
+                <li> <a href="dibuja_y_arrastra/dibuja_y_arrastra.html"> dibuja y arrastra </a> </li>
+                <li> <a href="dibuja_y_arrastra_3/dibuja_y_arrastra_3.html"> dibuja y arrastra </a> </li>
+                <li> <a href="reloj/clock.htm"> reloj </a> </li>
+              </ul>
+            </nav>
+            <div class="contenido">
+                <article>
+                Este es el contenido de "Ejemplos Avanzados", que se publica en http://profesooooor.esy.es/.
+                Este mismo "index.html" ya es un ejemplo, pues es una página web diseñada con los
+                elementos HTML5 "modernos": header, footer, ...
+                Además, utiliza el modelo de diseño de caja flexible.
+                </article>
+                <article>
+                  Este diseño se utiliza mucho y está explicado en más de
+                  <a href="https://developer.mozilla.org/es/docs/Web/CSS/CSS_Flexible_Box_Layout/Usando_las_cajas_flexibles_CSS">un sitio</a>
+                .
+                Esta página respeta las etiquetas header, article, etc.
+                  Lo único que no está bien es el h1 inicial, que debería estar en el "header".
+                </article>
+                <article>
+                  Si estás en un ordenador, reduce el tamaño de la ventana y verás cómo se adapta.
+                  Si estás en un móvil, gíralo.
+                </article>
+            </div>
+            <aside>aside (anuncios)</aside>
+        </div>
+        <footer> footer </footer>
+    </div>
+
+  </body>
+</html>

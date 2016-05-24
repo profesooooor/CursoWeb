@@ -25,50 +25,50 @@ function init() {
   ctx.fillRect(0,0,canvas.width,canvas.height);
   ctx.strokeStyle = "black";
 
-/*  
+
   canvas.addEventListener('mousedown', onMouseDown);
   canvas.addEventListener('mousemove', onMouseMove);
   canvas.addEventListener('mouseup', onMouseUp);
-*/
+
   // Yo añado esto --->>>
   // Fuente: http://www.desarrolloweb.com/articulos/trabajo-eventos-touch-javascript.html
   // canvas.addEventListener('touchstart', onMouseDown);
   // canvas.addEventListener('touchmove', onMouseMove);
   // canvas.addEventListener('touchend', onMouseUp);
   var obj=document.getElementById("objArrastrable");
-  
-  var canvas = document.getElementById('objeto'); 
+
+  var canvas = document.getElementById('objeto');
   var ctx= canvas.getContext('2d');
-  
-  
+
+
   obj.addEventListener('touchmove', function(event){
-      if (event.targetTouches.length == 1) { 
-        var touch = event.targetTouches[0]; 
+      if (event.targetTouches.length == 1) {
+        var touch = event.targetTouches[0];
         // con esto solo se procesa UN evento touch
         obj.style.left = touch.pageX + 'px';
         obj.style.top = touch.pageY + 'px';
-        } 
-  }, false);        
+        }
+  }, false);
 
-        
-    canvas.addEventListener('touchmove', function(event) { 
-     for (var i = 0; i < event.touches.length; i++) { 
-    var touch = event.touches[i]; 
+
+    canvas.addEventListener('touchmove', function(event) {
+     for (var i = 0; i < event.touches.length; i++) {
+    var touch = event.touches[i];
      ctx.beginPath();
      // PEDRO FELIP. Yo añado el -offsetLeft y el -offsetTop para que dibuje donde toca.
      // En realidad, habría que ver donde empieza el "canvas", que está desplazado
      // por el objArrastrable.
      ctx.arc(touch.pageX-canvas.offsetLeft, touch.pageY-canvas.offsetTop, 20, 0, 2*Math.PI, true);
-     ctx.fill(); 
+     ctx.fill();
      ctx.stroke();
-     } 
- }, false);    
-    
+     }
+ }, false);
 
-  
+
+
   // <<<---
-  
-  
+
+
   requestAnimFrame(drawPointers);
 }
 

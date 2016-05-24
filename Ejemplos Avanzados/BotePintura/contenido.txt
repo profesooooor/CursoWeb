@@ -1,0 +1,6 @@
+dibuja y arrastra 4.
+
+Esta página web va a ser la alternativa a la de App Inventor "Pintura".
+Está basada en lo que aprendí en el "Curso UDACITY Mobile Web Development", sobre todo en la lección 8.
+
+Utiliza el polyfill peps.js (sirve para que funcione en todos los navegadores).

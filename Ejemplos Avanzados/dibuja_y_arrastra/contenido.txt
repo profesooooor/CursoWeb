@@ -1,0 +1,5 @@
+dibuja_y_arrastra
+
+Nombres originales de los archivos:
+leccion8_ejemplo.html
+leccion8_ejemplo.js
