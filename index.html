@@ -5,83 +5,8 @@
     <title>Curso de Diseño de Páginas Web</title>
     <meta  content="Pedro Felip Belenguer"  name="author">
     <meta  name="viewport"  content="width=device-width, initial-scale=1">
-    <style>
-    /*
-        Android requiere -webkit.
-        Edge reconoce todo: con y sin -webkit.
-    */
-
-        /* page es toda la página, todo el body */
-        #page {
-            display:        flex;
-            flex-direction: column;
-            display:        -webkit-flex;
-            -webkit-flex-direction: column;
-            /* Ocupar todo aunque no esté lleno de contenido */
-            height:         100vh;
-        }
-        header, footer {
-            padding-left:    20px; /* Si no meto h1 dentro, poner padding:20px */
-            background: #666;
-            color:      white;
-            border:     1px solid #eebb55;
-            border-radius: 7pt;
-        }
-        /* main es lo principal: todo menos header y footer */
-        #main {
-            display:    flex;
-            display:    -webkit-flex;
-            flex-grow:  1;
-        }
-        nav {
-            background: honeydew;
-            width:      120px;
-            border:     1px solid #eebb55;
-            border-radius: 7pt;
-            padding: 2px;
-        }
-        .contenido {
-            background: lightblue;
-            border:     1px solid #eebb55;
-            border-radius: 7pt;
-            flex-grow:  1; /* Ocupa todo lo que no esté reservado */
-        }
-        article {
-          padding: 5px;
-        }
-        aside {
-            background: peachpuff;
-            width:      120px;
-            border:     1px solid #eebb55;
-            border-radius: 7pt;
-            padding: 2px;
-        }
-        @media (max-width: 600px) {
-            /*
-                Con un ancho de pantalla pequeño lo que vamos a hacer es poner una
-                cosa debajo de otra.
-                Cada elemento ocupará todo el ancho, pero sin salirse del "parent",
-                por eso no ponemos 100vh sino auto.
-            */
-            /*
-                También podríamos hacer @media (orientation:landscape) o combinar ambos
-            */
-            #main {
-                flex-direction: column;
-                -webkit-flex-direction: column;
-            }
-            nav {
-                width: auto;
-            }
-            .contenido {
-              order: -1;
-              width: auto;
-            }
-            aside {
-                width: auto;
-            }
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="Ejemplos Avanzados/santogr.css">
+    <link rel="stylesheet" type="text/css" href="Ejemplos Avanzados/menuv.css">
   </head>
   <body>
     <div id="page">
@@ -89,15 +14,26 @@
             <h1> CURSO DE DISEÑO DE PÁGINAS WEB </h1>
         </header>
         <div id="main">
-            <nav> navegación (menú) </nav>
+            <nav>
+              <ul class="menuizq">
+                <li> <a href="https://github.com/profesooooor/CursoWeb"> GitHub </a> </li>
+                <li> <a href="Ejemplos Avanzados/index.html">Ejemplos Avanzados </li>
+                <li> <a href="http://profesooooor.besaba.com/WebActual/index.html"> Vieja Web </a> </li>
+              </ul>
+            </nav>
             <div class="contenido">
                 <article>
-                  Aprende a diseñar páginas web que se adaptan a diferentes dispositivos y pantallas.
-                  Este curso comprende HTML5, CSS, JavaScript.
-                  Para más información, abre el PDF.
+                  Aprende a diseñar páginas web que se adaptan a diferentes dispositivos y pantallas, como esta misma
+                  que estás viendo (en una pantalla grande el menú está a la izquierda, en una pequeña está abajo).
                 </article>
                 <article>
-                  Echa un vistazo a los <a href="Ejemplos Avanzados/index.html">Ejemplos Avanzados</a>
+                  Todo el material está disponible públicamente en <a href="https://github.com/profesooooor/CursoWeb"> https://github.com/profesooooor/CursoWeb </a>,
+                  incluyendo un PDF que es un curso para aprender.
+                  Está organizado en diferentes apartados:
+                  <ul><li>HTML</li><li>CSS</li><JavaScript></li><li>Nivel Medio</li><li>Nivel Avanzado</li></ul>
+                </article>
+                <article>
+                  Puedes echar un vistazo a los <a href="Ejemplos Avanzados/index.html">Ejemplos Avanzados</a>
                 </article>
             </div>
             <aside>aside (anuncios)</aside>

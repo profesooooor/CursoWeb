@@ -1,0 +1,80 @@
+/*
+  santogr.css
+  Diseño del Santo Grial, basado en Flexbox
+*/
+
+/*
+    Android requiere -webkit.
+    Edge reconoce todo: con y sin -webkit.
+*/
+
+    /* page es toda la página, todo el body */
+    #page {
+        display:        flex;
+        flex-direction: column;
+        display:        -webkit-flex;
+        -webkit-flex-direction: column;
+        /* Ocupar todo aunque no esté lleno de contenido; pero puede que prefieras quitarlo */
+        height:         98vh; // Con 100vh no me cabe todo bien, tal vez por el "padding" que no pongo a 0
+    }
+    header, footer {
+        padding-left:    20px; /* Si no meto h1 dentro, poner padding:20px */
+        background: #666;
+        color:      white;
+        border:     1px solid #eebb55;
+        border-radius: 7pt;
+    }
+    /* main es lo principal: todo menos header y footer */
+    #main {
+        display:    flex;
+        display:    -webkit-flex;
+        flex-grow:  1;
+    }
+    nav {
+        background: peachpuff; //honeydew;
+        width:      auto; //150px;
+        border:     1px solid #eebb55;
+        border-radius: 7pt;
+        padding: 2px;
+    }
+    .contenido {
+        background: lightblue;
+        border:     1px solid #eebb55;
+        border-radius: 7pt;
+        flex-grow:  1; /* Ocupa todo lo que no esté reservado */
+    }
+    article {
+      padding: 5px;
+    }
+    aside {
+        background: peachpuff;
+        width:      120px;
+        border:     1px solid #eebb55;
+        border-radius: 7pt;
+        padding: 2px;
+    }
+    @media (max-width: 600px) {
+        /*
+            Con un ancho de pantalla pequeño lo que vamos a hacer es poner una
+            cosa debajo de otra.
+            Cada elemento ocupará todo el ancho, pero sin salirse del "parent",
+            por eso no ponemos 100vh sino auto.
+        */
+        /*
+            También podríamos hacer @media (orientation:landscape) o combinar ambos
+        */
+        #main {
+            flex-direction: column;
+            -webkit-flex-direction: column;
+        }
+        nav {
+            width: auto;
+        }
+        .contenido {
+          order: -1;
+          width: auto;
+        }
+        aside {
+            width: auto;
+        }
+    }

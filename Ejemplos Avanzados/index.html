@@ -5,84 +5,19 @@
     <title>Curso Web - Ejemplos Avanzados</title>
     <meta  content="Pedro Felip Belenguer"  name="author">
     <meta  name="viewport"  content="width=device-width, initial-scale=1">
-    <style>
-    /*
-        Android requiere -webkit.
-        Edge reconoce todo: con y sin -webkit.
-    */
-
-        /* page es toda la página, todo el body */
-        #page {
-            display:        flex;
-            flex-direction: column;
-            display:        -webkit-flex;
-            -webkit-flex-direction: column;
-            /* Ocupar todo aunque no esté lleno de contenido */
-            height:         100vh;
-        }
-        header, footer {
-            padding-left:    20px; /* Si no meto h1 dentro, poner padding:20px */
-            background: #666;
-            color:      white;
-            border:     1px solid #eebb55;
-            border-radius: 7pt;
-        }
-        /* main es lo principal: todo menos header y footer */
-        #main {
-            display:    flex;
-            display:    -webkit-flex;
-            flex-grow:  1;
-        }
-        nav {
-            background: peachpuff; //honeydew;
-            width:      auto; //150px;
-            border:     1px solid #eebb55;
-            border-radius: 7pt;
-            padding: 2px;
-        }
-        .contenido {
-            background: lightblue;
-            border:     1px solid #eebb55;
-            border-radius: 7pt;
-            flex-grow:  1; /* Ocupa todo lo que no esté reservado */
-        }
-        article {
-          padding: 5px;
-        }
-        aside {
-            background: peachpuff;
-            width:      120px;
-            border:     1px solid #eebb55;
-            border-radius: 7pt;
-            padding: 2px;
-        }
-        @media (max-width: 600px) {
-            /*
-                Con un ancho de pantalla pequeño lo que vamos a hacer es poner una
-                cosa debajo de otra.
-                Cada elemento ocupará todo el ancho, pero sin salirse del "parent",
-                por eso no ponemos 100vh sino auto.
-            */
-            /*
-                También podríamos hacer @media (orientation:landscape) o combinar ambos
-            */
-            #main {
-                flex-direction: column;
-                -webkit-flex-direction: column;
-            }
-            nav {
-                width: auto;
-            }
-            .contenido {
-              order: -1;
-              width: auto;
-            }
-            aside {
-                width: auto;
-            }
-        }
-    </style>
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="santogr.css">
+    <link rel="stylesheet" type="text/css" href="menuv.css">
+    <script>
+    function ayuda(opc) {
+      var texto = {"crono": "Cronómetro táctil con múltiples paradas.",
+        "dibu1": "Aplicación de dibujo multitáctil con JavaScript puro (sin jQuery ni peps).",
+        "dibu3": "Aplicación de dibujo multitáctil con peps.js para la máxima compatibilidad.",
+        "pintura": "Bote de pintura.",
+        "plataformas": "Juego de plataformas.",
+        "reloj": "Reloj SVG."};
+      document.getElementById("escribe").innerHTML=texto[opc];
+    }
+    </script>
   </head>
   <body>
     <div id="page">
@@ -92,11 +27,12 @@
         <div id="main">
             <nav>
               <ul class="menuizq">
-                <li> <a href="BotePintura/BotePintura.html"> pintura </a> </li>
-                <li> <a href="crono/crono.html"> crono </a> </li>
-                <li> <a href="dibuja_y_arrastra/dibuja_y_arrastra.html"> dibuja y arrastra </a> </li>
-                <li> <a href="dibuja_y_arrastra_3/dibuja_y_arrastra_3.html"> dibuja y arrastra </a> </li>
-                <li> <a href="reloj/clock.htm"> reloj </a> </li>
+                <li> <a href="BotePintura/BotePintura.html" onmouseover="ayuda('pintura')"> pintura </a> </li>
+                <li> <a href="crono/crono.html" onmouseover="ayuda('crono')"> crono </a> </li>
+                <li> <a href="dibuja_y_arrastra/dibuja_y_arrastra.html" onmouseover="ayuda('dibu1')"> dibuja y arrastra </a> </li>
+                <li> <a href="dibuja_y_arrastra_3/dibuja_y_arrastra_3.html" onmouseover="ayuda('dibu3')"> dibuja y arrastra </a> </li>
+                <li> <a href="reloj/clock.htm" onmouseover="ayuda('reloj')"> reloj </a> </li>
+                <li> <a href="plataformas/plataformas.html" onmouseover="ayuda('plataformas')"> plataformas </a> </li>
               </ul>
             </nav>
             <div class="contenido">
@@ -117,16 +53,13 @@
                   Si estás en un ordenador, reduce el tamaño de la ventana y verás cómo se adapta.
                   Si estás en un móvil, gíralo.
                 </article>
+                <br><br>
                 <article id="escribe">
-                  HE PREPARADO EL id "escribe" PARA ESCRIBIR AHÍ LAS INSTRUCCINES DE CADA PUNTO DEL
-                  MENÚ CUANDO SE SOBREVUELE. Aunque tal vez sea mejor utilizar el footer para eso.
-                  Seguramente será mejor también hacer el menú más ancho y buscar un sentido al aside.
                 </article>
             </div>
             <aside>aside (anuncios)</aside>
         </div>
-        <footer> footer </footer>
+        <footer> Todo está en construcción </footer>
     </div>
-
   </body>
 </html>

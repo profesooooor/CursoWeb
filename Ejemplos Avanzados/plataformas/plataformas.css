@@ -1,0 +1,30 @@
+body {
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  overflow: hidden;
+  background-color: beige;
+}
+
+h1 {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 0);
+}
+
+#terrenoDeJuego {
+  border: 1px solid black;
+  /* Si utilizamos unidades viewport las imágenes salen borrosas
+  porque son ampliadas después de dibujarse. Por eso se ha optado por
+  calcular sus dimensiones en js.
+  width: 90vw;
+  height: 80vh;
+  */
+
+  background-color: rgb(255,0,0);
+}
