@@ -1,7 +1,35 @@
-    /*
-        Android requiere -webkit.
-        Edge reconoce todo: con y sin -webkit.
-    */
+/*
+  santogrial.css
+
+  Utilización:
+    - está preparado para adaptar el contenido a la página
+    - el menú <nav> y la parte opcional <aside> tienen un tamaño fijo
+    - si no se va a utilizar <aside> se puede declarar "aside {display: none}""
+      después del link a santogrial.css
+    - también se puede preferir otro ancho de menú, o hacerlo automático. En tal
+      caso hacer "nav {width: 100px}" o "nav {width: auto}" según corresponda.
+
+
+  Esta colección de estilos fue llamada "El Santo Grial" por alguien de internet,
+  seguramente pretendiendo que contiene todo lo que puedas necesitar, lo cual
+  es muy discutible.
+
+  Está basada en las FlexBox o Cajas Flexibles.
+  La idea es que el contenido de la página se adapte en tiempo real al tamaño
+  y forma de la pantalla.
+  De este modo, una página puede verse con un menú a la izquierda en una pantalla
+  grande, y ese mismo menú abajo en una pantalla pequeña.
+  También podría hacerse que el "aside" quedara oculto (hidden) en pantallas
+  pequeñas para que el cuerpo principal ("main") ocupara todo el ancho.
+
+  Posibles modificaciones:
+    - Cambiar donde pone #page por body, puesto que raramente utilizaremos una
+      página con esta hoja de estilos en la que #page no coincida con el body.
+
+  Comentarios técnicos:
+    - Android requiere -webkit.
+    - Edge reconoce todo: con y sin -webkit.
+*/
 
         /* page es toda la página, todo el body */
         #page {
@@ -13,13 +41,14 @@
             height:         100vh;
         }
         header, footer {
-            padding-left:    20px; /* Si no meto h1 dentro, poner padding:20px */
+            padding-left:    20px;
+            padding-right:   20px;
             background: #666;
             color:      white;
             border:     1px solid #eebb55;
             border-radius: 7pt;
         }
-        /* main es lo principal: todo menos header y footer */
+        /* main es lo principal: nav, contenido y aside pero no header y footer */
         #main {
             display:    flex;
             display:    -webkit-flex;
@@ -32,6 +61,7 @@
             border-radius: 7pt;
             padding: 2px;
         }
+        /* Contenido es de verdad lo más importante una vez quitamos cabeceras, pies, menús, ... */
         .contenido {
             background: lightblue;
             border:     1px solid #eebb55;

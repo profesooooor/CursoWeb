@@ -1,14 +1,28 @@
+/*
+  plataformas.css
+  Definiciones de estilos de este proyecto.
+  Algunas sobreescriben lo definido en "santogrial.css",
+  que debe enlazarse antes.
+*/
+
+nav { width:auto }
+aside { display: none }
+
 body {
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-  padding-left: 0px;
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-bottom: 0px;
-  margin-left: 0px;
+  padding: 0px;
+  /*margin:  0px;*/
+  /*
+    El siguiente "overflow" hace que el "body" crezca tanto como sus hijos.
+    Véase "Float Clearing" en https://css-tricks.com/the-css-overflow-property/).
+    Como en este proyecto se utiliza FlexBox con flex-grow creo que el overflow
+    no tiene sentido que se utilice, así que lo comento.
   overflow: hidden;
+  */
   background-color: beige;
+}
+
+.contenido {
+    background: red;
 }
 
 h1 {
@@ -17,14 +31,15 @@ h1 {
   background-color: rgb(255, 255, 0);
 }
 
+/* Voy a definir esto en plataformas.js
 #terrenoDeJuego {
   border: 1px solid black;
-  /* Si utilizamos unidades viewport las imágenes salen borrosas
+  ()* Si utilizamos unidades viewport las imágenes salen borrosas
   porque son ampliadas después de dibujarse. Por eso se ha optado por
   calcular sus dimensiones en js.
   width: 90vw;
   height: 80vh;
-  */
-
+  *)
   background-color: rgb(255,0,0);
 }
+*/

@@ -5,39 +5,28 @@
     <title>Juego de plataformas</title>
     <meta  content="Pedro Felip Belenguer"  name="author">
     <meta  name="viewport"  content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="plataformas.css">
     <link rel="stylesheet" type="text/css" href="santogrial.css">
+    <link rel="stylesheet" type="text/css" href="plataformas.css">
     <style>
-      jcanvas {
-        position: absolute;
-        top: 100px;
-        left: 50px;
-        }
-      #fondo {
-        z-index: -2;
-        }
-      #nube {
-        z-index: -1;
-        }
-      #pajaro {
-        z-index: 0;
-      }
+    #depura {
+      position:absolute;
+      top:100px;
+      left:500px;
+    }
     </style>
   </head>
   <body>
     <div id="page">
       <header>
-        <h1> JUEGO DE PLATAFORMAS </h1>
+        <h1> JUEGO DE PLATAFORMAS - control por teclado</h1>
       </header>
       <div id="main">
-        <nav>
-          <!-- <img src="snippets/silencio.jpg" width=50%> -->
-        </nav>
+        <div id="depura"></div>
+        <!-- <nav>
+          <img src="snippets/silencio.jpg" width=25%>
+        </nav>< -->
         <div class="contenido" id="contenido">
           <canvas id="terrenoDeJuego"> </canvas>
-          <audio preload="true" id="collide">
-<!--            <source src="http://dl.dropbox.com/u/26141789/canvas/pingpong/Metal%20Cling%20-%20Hit.mp3" /> -->
-          </audio>
         </div>
         <aside></aside>
       </div>

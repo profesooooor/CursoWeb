@@ -1,6 +1,8 @@
 /*
   santogr.css
-  Diseño del Santo Grial, basado en Flexbox
+  Diseño del Santo Grial, basado en Flexbox.
+  Es como "santogrial.css" de plataformas con las siguientes modificaciones:
+     - height: 98vh; en lugar de 100vh. Poniendo body {padding: 0px; margin: 0px} se resolvería.
 */
 
 /*

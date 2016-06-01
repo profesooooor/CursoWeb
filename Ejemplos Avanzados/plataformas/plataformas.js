@@ -5,23 +5,27 @@
 		- que se puedan añadir algunas cosas tocando la pantalla. Donde tocas pones un bono se supersaltos
 		- probar el aspecto en un móvil
 		- probar el rendimiento en un móvil*
-		- añadir niveles. Cada nivel se distingue en el número y posición de plataformas, tamaño y posición del premio, uno o más malvados...
-		- dibuja(): dar movimiento al personaje. Puede haber 4 fotogramas que van cambiando cuando avanza
-		- añadir un pájaro (como en varioscanvas.html) que sobrevuela cuando te mueres
+		- añadir un pájaro/cuervo (como en varioscanvas.html) que sobrevuela cuando te mueres
 		- añadir la clase Sprite y que personaje, malvado y premio sean de esa clase
-		- mostrar el nivel de una forma más vistosa
-		- dibuja(): que las plataformas sean más vistosas, con textura
-		- dibuja(): que, en un nivel, haya un fondo móvil (imagen que se mueve)
-		- colision_exacta(sprite1, sprite2). Una colisión exacta se produce cuando dos sprites se tocan de verdad.
-		  Una manera de lograr una colisión exacta que sea rápida de calcular puede consistir en
-			lo siguiente:
-			   a. Se cumple colision_rectangular(sprite1, sprite2)
-				 b. La intersección entre los bits que no son transparentes no es vacía
-			Tal vez podría ayudar el situar el canas en un canvas (son su zindex) y los sprites que pueden
-			colisionar en otro (u otros).
-			Así sí que es posible detectar si un bit es transparente o no lo es.
-      El método exacto podría ser el que se utiliza en la función collideTest() que hay
-			en https://msdn.microsoft.com/en-us/library/gg589497(v=vs.85).aspx
+		- dibuja():
+			- mostrar el nivel de una forma más vistosa
+			- añadir animación de cuando toca al malvado. Podría ser una animación parecida a la que se
+			  produce en pong_cssdeck.js cuando la pelota toca una paleta.
+			- que las plataformas sean más vistosas, con textura
+		  - que, en un nivel, haya un fondo móvil (imagen que se mueve)
+			- que el personaje se mueva con varios fotogramas (pueden sacarse de un gif), es decir,
+			  moviendo los pies
+		- accion():
+			- que el malvado crezca con el tiempo
+			- que el malvado evolucione (varias imágenes)
+			- que el malvado se mueva
+			- que haya más de un malvado
+		- colisiones:
+			- colision_malvado() debería llamar a colision_exacta(), que hay que hacer a partir de
+			  lo que hay hecho.
+			- colision_exacta() debe mejorarse, pues ahora sólo se detecta con colisiones del mismo
+			  color, pero un azul puro con un verde puro no chocarían
+			- colision_premio() debería ser más exacta, pues ahora mismo sigue siendo rectangular
 
   Mejorar la velocidad:
 	  - *Mirar varioscanvas.html para poner cada cosa en un plano y no redibujar el fondo entero cada vez, sino clearRect para borrar
@@ -35,10 +39,7 @@
 		- inspirado también en el gran http://www.juegos.com/juego/super-mario-bros-mezcla-de-estrellas-3
 		- sonidos de http://www.sonidosmp3gratis.com/juego
 		- http://blog.sklambert.com/html5-canvas-game-panning-a-background y el resto del tutorial
-	Además, estoy estudiando distintos tipos de colisiones. De momento utilizo la rectangular
-	Posibilidades en estudio:
-	   - utilización de varios "canvas" (zindex) y redibujar sólo lo imprescindible (ctx.clearRect)
-		 - ctx.rotate, ctx.translate, ctx.clearRect
+		- colisión con bitmap: https://msdn.microsoft.com/en-us/library/gg589497(v=vs.85).aspx
 */
 
 var
@@ -57,18 +58,77 @@ var
 	juegoParado;
 
 window.onload = function () {
+	prepararElTerreno();
+	prepararPersonaje();
+	prepararMalvado();
+	prepararPremio();
+
+	sonidoMuerte = new Audio('ahooga.wav');
+	sonidoPremio = new Audio('beso.wav');
+
+	// Esperar así a que se carguen las imágenes colapsaría la CPU y no permitiría su carga:
+	// while (ipc) {}
+	// En lugar de eso, en bucleAnimacion() me espero antes de llamar a dibuja().
+
+	nivel=1;
+	nuevoEscenario(nivel);
+
+	juegoParado=false;
+	bucleAnimacion();
+
+	// Órdenes del usuario
+	window.addEventListener('keydown', pulsaTecla, true);
+}
+
+function prepararElTerreno() {
+		// Vamos a utilizar varios "canvas" porque, de este modo, el fondo y las
+		// figuras que no se mueven sólo las tendremos que dibujar cuando empiece
+		// un nuevo nivel.
+		// Sin embargo, nuestro personaje no para de moverse y se tiene que redibujar
+		// constantemente. Es mejor dibujarlo en un "canvas" que esté por encima
+		// del resto.
+		// Otro motivo por el que se pueden poner figuras en diferentes "canvas" es
+		// que vamos a poder controlar las colisiones con más exactitud, con el método
+		// getImageData(). Por eso al malvado lo ponemos en su propio "canvas".
+		// Para poder superponer los "canvas" todos deberán tener posicionamiento
+		// "absolute". No indicamos ni su "top" ni su "left" porque vamos a dejar
+		// que sea HTML/CSS quien decida su posición, simplemente los metemos en
+		// un lugar llamado "contenido".
+		// Eso sí: nos aseguramos de que coincidan en sus dimensiones.
+
 		// Redimensionar el terreno de juego para que ocupe todo el espacio disponible
 		//terrenoDeJuego.height=terrenoDeJuego.parentElement.clientHeight;
 		terrenoDeJuego.height=document.getElementById("contenido").clientHeight;
 		//terrenoDeJuego.width=terrenoDeJuego.parentElement.clientWidth;
 		terrenoDeJuego.width=document.getElementById("contenido").clientWidth;
+		terrenoDeJuego.style.border="1 px solid";
+		//terrenoDeJuego.style.background-color="rgb(255,0,0)";
+		terrenoDeJuego.style.zIndex=0;
+		// Para que haga caso del zIndex tiene que tener un posicionamiento "absolute"
+		terrenoDeJuego.style.position="absolute";
+}
+
+function prepararPersonaje() {
+		// Personaje amigo
+		var canvasp = document.createElement("canvas");
+		canvasp.id = "canvasp";
+		canvasp.height=terrenoDeJuego.height;
+		canvasp.width=terrenoDeJuego.width;
+		canvasp.style.zIndex=5;
+		canvasp.style.position="absolute";
+		//canvasp.style.top=terrenoDeJuego.offsetTop;
+		//canvasp.style.left=terrenoDeJuego.offsetLeft;
+		//canvasp.style.border="1 px solid";
+		document.getElementById("contenido").appendChild(canvasp);
+
+		ctxPersonaje=canvasp.getContext("2d");
 
 		// Crear el personaje, que es un "sprite"
 		personaje = new Object();
 		personaje.imgDerecho = new Image();
-		personaje.imgDerecho.src='goomba.png';
+		personaje.imgDerecho.src='snippets/goomba.png';
 		personaje.imgReves = new Image();
-		personaje.imgReves.src='goombar.png'
+		personaje.imgReves.src='snippets/goombar.png'
 		personaje.img = personaje.imgDerecho;
 		// personaje.x=0;
 		// personaje.y=0;
@@ -77,14 +137,30 @@ window.onload = function () {
 		ipc++;
 		personaje.img.onload = function() {
 			ipc--;
-			personaje.w=120;
-			personaje.h=120;
-			ctx.drawImage(personaje.img,personaje.x,personaje.y,personaje.w, personaje.h);
+			personaje.w=150;
+			personaje.h=150;
+			ctxPersonaje.drawImage(personaje.img,personaje.x,personaje.y,personaje.w, personaje.h);
 		};
+}
+
+function prepararMalvado() {
+		// Personaje Malvado
+		var canvasm = document.createElement("canvas");
+		canvasm.id = "canvasm";
+		canvasm.height=terrenoDeJuego.height;
+		canvasm.width=terrenoDeJuego.width;
+		canvasm.style.zIndex=5;
+		canvasm.style.position="absolute";
+		//canvasm.style.top=terrenoDeJuego.offsetTop;
+		//canvasm.style.left=terrenoDeJuego.offsetLeft;
+		//canvasm.style.border="1 px solid";
+		document.getElementById("contenido").appendChild(canvasm);
+
+		ctxMalvado=canvasm.getContext("2d");
 
 		malvado = new Object();
 		malvado.img = new Image();
-		malvado.img.src = "malvado.png";
+		malvado.img.src = "snippets/malvado.png";
 		// malvado.y = terrenoDeJuego.height-100;
 		ipc++;
 		malvado.img.onload = function () {
@@ -94,12 +170,14 @@ window.onload = function () {
 			malvado.w=malvado.img.width=100;
 			malvado.h=malvado.img.height=100;
 			// malvado.x = terrenoDeJuego.width-malvado.w*2;
-			ctx.drawImage(malvado.img, malvado.x, malvado.y, malvado.w, malvado.h);
+			ctxMalvado.drawImage(malvado.img, malvado.x, malvado.y, malvado.w, malvado.h);
 		}
+}
 
+function prepararPremio() {
 		premio = new Object();
 		premio.img = new Image();
-		premio.img.src="premio.png";
+		premio.img.src="snippets/premio.png";
 		// premio.x=terrenoDeJuego.width-100;
 		// premio.y=10;
 		ipc++;
@@ -109,24 +187,6 @@ window.onload = function () {
 			premio.w=100;
 			ctx.drawImage(premio.img, premio.x, premio.y, premio.w, premio.h);
 		}
-
-		sonidoMuerte = new Audio('ahooga.wav');
-		sonidoPremio = new Audio('beso.wav');
-
-		// Esperar así a que se carguen las imágenes colapsaría la CPU y no permitiría su carga:
-		// while (ipc) {}
-
-		nivel=1;
-		nuevoEscenario(nivel);
-
-		//msjUsuario("Cargado");
-
-		juegoParado=false;
-		// Poner en marcha la animación
-		bucleAnimacion();
-
-		// Movimientos del usuario
-		window.addEventListener('keydown', pulsaTecla, true);
 
 }
 
@@ -155,8 +215,9 @@ function nuevoEscenario(nivel) {
 			plataformas.push(new creaPlataforma(0, 200, 300, 40));
 			plataformas.push(new creaPlataforma(300, 240, 200, 40));
 			plataformas.push(new creaPlataforma(500, 200, 200, 40));
-			plataformas.push(new creaPlataforma(terrenoDeJuego.width-50, 200, 50, 40));
-			plataformas.push(new creaPlataforma(0,  terrenoDeJuego.height-25, terrenoDeJuego.width, 25));
+			plataformas.push(new creaPlataforma(900,250,150,40));
+			plataformas.push(new creaPlataforma(terrenoDeJuego.width-100, 200, 100, 40));
+			plataformas.push(new creaPlataforma(0, terrenoDeJuego.height-25, terrenoDeJuego.width, 25));
 			// Gravedad
 			fuerzas.gravedad=1;
 			fuerzas.rozamiento=0.02;
@@ -215,6 +276,10 @@ function msjUsuario(msj) {
 	document.getElementById("estado").innerHTML=msj;
 	}
 
+function msjDepura(msj) {
+	document.getElementById("depura").innerHTML=msj;
+	}
+
 function bucleAnimacion() {
 	init = requestAnimFrame(bucleAnimacion);
 	if (ipc) return; // Si quedan imágenes por cargar (onload) no intento dibujar nada.
@@ -268,24 +333,38 @@ function dibuja() {
 		ctx.fillRect(p.x, p.y, p.w, p.h);
 	}
 
+	// Dibujar personaje
+	if (personaje.vx>0) personaje.img=personaje.imgDerecho;
+	if (personaje.vx<0) personaje.img=personaje.imgReves;
+	//ctx.fillRect(personaje.x, personaje.y, personaje.w, personaje.h); // Ver contorno rectangular
+	ctxPersonaje.clearRect(0, 0, terrenoDeJuego.width, terrenoDeJuego.height); // Optimizable
+	ctxPersonaje.drawImage(personaje.img,personaje.x,personaje.y,personaje.w,personaje.h);
+
 	//ctx.rotate(1); Sólo afecta a lo que se dibuja después
-	//ctx.fillRect(malvado.x, malvado.y, malvado.w, malvado.h);
-	ctx.drawImage(malvado.img, malvado.x, malvado.y, malvado.w, malvado.h);
+	//ctx.fillRect(malvado.x, malvado.y, malvado.w, malvado.h); // Ver contorno rectangular
+	ctxMalvado.drawImage(malvado.img, malvado.x, malvado.y, malvado.w, malvado.h);
 	//ctx.rotate(-1);
 
 	//ctx.fillRect(premio.x, premio.y, premio.w, premio.h);
 	ctx.drawImage(premio.img, premio.x, premio.y, premio.w, premio.h);
 
-	// Dibujar personaje
-	if (personaje.vx>0) personaje.img=personaje.imgDerecho;
-	if (personaje.vx<0) personaje.img=personaje.imgReves;
-	//ctx.fillRect(personaje.x, personaje.y, personaje.w, personaje.h);
-	ctx.drawImage(personaje.img,personaje.x,personaje.y,personaje.w,personaje.h);
 }
 
 function accion() {
-	// Actualizar la posición de todos los objetos móviles
-	// Aquí está toda la lógica del juego
+	/*
+		Aquí está toda la lógica del juego.
+		Primero, detectar si se dan las condiciones de fin del juego.
+		Depués, calcular el próximo movimiento de cada objeto móvil.
+	*/
+
+	if (colision_malvado()) {
+		gameOver('M');
+		nivel=1; // Volvemos al nivel inicial
+		}
+	if (colision_premio()) {
+		gameOver('P');
+		nivel++;
+	}
 
 	if (sobre_una_plataforma()) {
 		if (personaje.vy<0) personaje.y+=personaje.vy; // Saltar
@@ -320,14 +399,7 @@ function accion() {
 		} else
 			personaje.vx=0;
 	}
-	if (colision_malvado()) {
-		gameOver('M');
-		nivel=1; // Volvemos al nivel inicial
-		}
-	if (colision_premio()) {
-		gameOver('P');
-		nivel++;
-	}
+
 
 }
 
@@ -344,37 +416,66 @@ function colision_plataformas() {
 }
 
 function colision_malvado() {
-  return colision_rectangular(personaje, malvado);
+	return colision_perfecta(personaje, malvado, ctxPersonaje, ctxMalvado);
+}
+
+function colision_perfecta(a, b, ctxA, ctxB) {
 	/*
-	  Si hay una colisión rectangular, hay que mirar mejor dentro de la intersección.
-		Esa intersección tiene estos parámetros:
+		Vamos a ver si hay una colisión entre dos Sprites, el A y el B.
+		Esta función sólo puede utilizarse si ambos Sprites están en dos "canvas"
+		diferentes, cuyos contextos 2d son ctaA y ctxB.
 	*/
-	col.x=Math.max(personaje.x, malvado.x);
-	col.y=Math.max(personaje.y, malvado.y);
-	col.finx=Math.min(personaje.x+personaje.w, malvado.x+malvado.w);
-	col.finy=Math.min(personaje.y+personaje.h, malvado.y+malvado.h);
+	var col={};
+	if (!colision_rectangular(a, b)) return false;
+	/*
+	  Hay una colisión rectangular, es decir, que el rectángulo que reodea a cada
+		una de las dos figuras toca con el de la otra figura.
+		Cuando se tocan es porque hay una intersección entre esos dos rectágulos.
+		Esa intersección es, también, un rectángulo.
+		Vamos a mirar bien en esa intersección para ver si, realmente, se están
+		tocando píxeles del personaje bueno y del malvado.
+	*/
+	/*
+		La intersección es el rectángulo definido por col.x, col.y, col.w, col.h.
+	*/
+	col.x=Math.max(a.x, b.x);
+	col.y=Math.max(a.y, b.y);
+	col.finx=Math.min(a.x+a.w, b.x+b.w);
+	col.finy=Math.min(a.y+a.h, b.y+b.h);
 	col.w=col.finx-col.x;
 	col.h=col.finy-col.y;
+	if (col.w<1 || col.h<1) return;
 	/*
 		Ahora hay que mirar byte a byte todo el rectángulo que define la intersección
 		para ver si un mismo byte está ocupado por ambos sprites, es decir, si ambos
-		tienen un color (r, g o b) en la misma coordenada.
+		tienen un color (r, g o b) en la misma coordenada (y que no sea transparente).
 		Esta manera de trabajar sólo es posible si cada sprite está situado en un
 		canvas diferente, pues de lo contrario el fondo nos impediría trabajar.
 		Además, se recomienda que el fondo no sea del mismo color que uno de los sprites,
 		pues parecerá que no chocan cuando realmente sí que lo están haciendo.
 	*/
-	var interP=ctxPersonaje.getImageData(col.x, col.y, col.w, col.h);
-	var interM=ctxMalvado.getImageData(col.x, col.y, col.w, col.h);
+
+	//var inter=ctx.getImageData(col.x, col.y, col.w, col.h);
+	//msjDepura("Colisión rectangular ("+col.x+", "+col.y+", "+col.w+", "+col.h+")");
+	var interA=ctxA.getImageData(col.x, col.y, col.w, col.h);
+	var interB=ctxB.getImageData(col.x, col.y, col.w, col.h);
+
+	// i=col.w*col.h;
+	// alert("Tamaño del cuadro: "+i+" que es 4 veces menos que "+interP.data.length);
+	//
+	// //for (i=0; i<col.w*col.h*4; i+=4) {interP.data[i]=255; interP.data[i+2]=150;}
+	// ctx.putImageData(inter,0,0);
+	// ctxPersonaje.putImageData(interP,0,200);
+	// ctxMalvado.putImageData(interM,0,400);
+
 	for (i=0; i<col.w*col.h*4; i+=4) {
 		// El cuarto byte es la transparencia. 0 indica transparencia total.
-		if (interP.data[i+3]==0 || interM.data[i+3]==0) continue;
-		if (interP.data[i] && interM.data[i]) return true; // Colisión en color rojo
-		if (interP.data[i+1] && interM.data[i+1]) return true; // Colisión en color verde
-		if (interP.data[i+2] && interM.data[i+2]) return true; // Colisión en color azul
+		if (interA.data[i+3]==0 || interB.data[i+3]==0) continue;
+		if (interA.data[i] && interB.data[i]) 		return true; // Colisión en color rojo
+		if (interA.data[i+1] && interB.data[i+1]) return true; // Colisión en color verde
+		if (interA.data[i+2] && interB.data[i+2]) return true; // Colisión en color azul
 	}
-
-
+	return false;
 }
 
 function colision_rectangular(a, b) {
@@ -383,7 +484,6 @@ function colision_rectangular(a, b) {
 }
 
 function colision_premio() {
-  //return colision_rectangular(personaje.x, personaje.y, personaje.w, personaje.h,														  premio.x, premio.y, premio.w, premio.h);
 	return colision_rectangular(personaje, premio);
 }
 
