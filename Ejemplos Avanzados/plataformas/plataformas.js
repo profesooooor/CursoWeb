@@ -1,13 +1,27 @@
 /*
 	plataformas.js
-	Pendiente de hacer:
-		- poner una figura que dé puntos. Podría tener un ctx.rotate que aumenta y disminuye según el número de "frame"
-		- que se puedan añadir algunas cosas tocando la pantalla. Donde tocas pones un bono se supersaltos
-		- probar el aspecto en un móvil
-		- probar el rendimiento en un móvil*
-		- añadir un pájaro/cuervo (como en varioscanvas.html) que sobrevuela cuando te mueres
-		- añadir la clase Sprite y que personaje, malvado y premio sean de esa clase
+	Poblemas conocidos:
+		- colision_exacta() debe mejorarse, pues ahora sólo se detecta con colisiones del mismo
+		  color, pero un azul puro con un verde puro no chocarían
+		- sólo se puede jugar en pantalla grande, porque no es escalable
+	Mejoras (de más a menos importante):
+		- mejorar el interés del juego (que den más ganas de jugar):
+			- figura que potencie los saltos (supersaltos). Puede estar en el mismo canvas que los premios.
+			  Al principio de cada nivel los saltos volverían a ser "estándar".
+			- que se puedan añadir algunas cosas tocando la pantalla. Donde tocas pones un bono se supersaltos
+			- probar el rendimiento en un móvil*
+			- añadir un pájaro/cuervo (como en varioscanvas.html) que sobrevuela cuando te mueres
+			- añadir la clase Sprite y que personaje, malvado y premio sean de esa clase
+			- contador de puntos.
+			- poner una figura que dé puntos. Podría tener un ctx.rotate que aumenta y
+			  disminuye según el número de "frame"
+			- podría tener una velocidad máxima
+			- cada plataforma podría tener un factor de rozamiento y de salto diferentes.
+		- jugabilidad:
+			- tactilidad. Se tiene que poder jugar sin teclado.
 		- dibuja():
+			- utilizar imágenes SVG animadas. En openclipart contamos con "emoji" y "animated" (éstas
+		    incluyen ya el código de animación)
 			- mostrar el nivel de una forma más vistosa
 			- añadir animación de cuando toca al malvado. Podría ser una animación parecida a la que se
 			  produce en pong_cssdeck.js cuando la pelota toca una paleta.
@@ -15,21 +29,20 @@
 		  - que, en un nivel, haya un fondo móvil (imagen que se mueve)
 			- que el personaje se mueva con varios fotogramas (pueden sacarse de un gif), es decir,
 			  moviendo los pies
+			- utilizar imágenes de tipo svg (animated svg)
 		- accion():
 			- que el malvado crezca con el tiempo
+			- que el usuario pueda jugar con función táctil:
+				- izquierda es pulsar a la izquierda del personaje
+				- pulsar sobre el personaje provoca que salte
 			- que el malvado evolucione (varias imágenes)
 			- que el malvado se mueva
 			- que haya más de un malvado
-		- colisiones:
-			- colision_malvado() debería llamar a colision_exacta(), que hay que hacer a partir de
-			  lo que hay hecho.
-			- colision_exacta() debe mejorarse, pues ahora sólo se detecta con colisiones del mismo
-			  color, pero un azul puro con un verde puro no chocarían
-			- colision_premio() debería ser más exacta, pues ahora mismo sigue siendo rectangular
 
   Mejorar la velocidad:
-	  - *Mirar varioscanvas.html para poner cada cosa en un plano y no redibujar el fondo entero cada vez, sino clearRect para borrar
-		  una figura en su antigua posición antes de redibujar la misma en la nueva posición
+	  - Redibujar el fondo (y demás figuras estáticas) sólo al principio de cada nivel, no en
+		  cada fotograma. En varioscanvas.html está hecho. Se trata de utilizar ClearRect() para
+			borrar un Sprite antes de moverlo, en lugar de borrar todo su canvas.
 
 
 
@@ -49,6 +62,7 @@ var
 	personaje,
 	malvado,
 	premio,
+	supersalto,
 	plataformas = [],
 	fuerzas = { gravedad: 0, rozamiento: 0},
 	sonidoMuerte,
@@ -137,8 +151,8 @@ function prepararPersonaje() {
 		ipc++;
 		personaje.img.onload = function() {
 			ipc--;
-			personaje.w=150;
-			personaje.h=150;
+			personaje.w=100;
+			personaje.h=100;
 			ctxPersonaje.drawImage(personaje.img,personaje.x,personaje.y,personaje.w, personaje.h);
 		};
 }
@@ -175,18 +189,44 @@ function prepararMalvado() {
 }
 
 function prepararPremio() {
-		premio = new Object();
-		premio.img = new Image();
-		premio.img.src="snippets/premio.png";
-		// premio.x=terrenoDeJuego.width-100;
-		// premio.y=10;
-		ipc++;
-		premio.img.onload = function() {
-			ipc--;
-			premio.h=100;
-			premio.w=100;
-			ctx.drawImage(premio.img, premio.x, premio.y, premio.w, premio.h);
-		}
+	// Sprite "premio"
+	var canvaspr = document.createElement("canvas");
+	canvaspr.id = "canvaspr";
+	canvaspr.height=terrenoDeJuego.height;
+	canvaspr.width=terrenoDeJuego.width;
+	canvaspr.style.zIndex=5;
+	canvaspr.style.position="absolute";
+	//canvaspr.style.top=terrenoDeJuego.offsetTop;
+	//canvaspr.style.left=terrenoDeJuego.offsetLeft;
+	//canvaspr.style.border="1 px solid";
+	document.getElementById("contenido").appendChild(canvaspr);
+
+	ctxPremio=canvaspr.getContext("2d");
+
+	premio = new Object();
+	premio.img = new Image();
+	premio.img.src="snippets/premio.png";
+	// premio.x=terrenoDeJuego.width-100;
+	// premio.y=10;
+	ipc++;
+	premio.img.onload = function() {
+		ipc--;
+		premio.h=100;
+		premio.w=100;
+		ctxPremio.drawImage(premio.img, premio.x, premio.y, premio.w, premio.h);
+	}
+
+	supersalto = new Object();
+	supersalto.img = new Image();
+	supersalto.img.src="snippets/supersalto.svg";
+
+	ipc++;
+	supersalto.img.onload = function() {
+		ipc--;
+		supersalto.h=50;
+		supersalto.w=50;
+		ctxPremio.drawImage(supersalto.img, supersalto.x, supersalto.y, supersalto.w, supersalto.h);
+	}
 
 }
 
@@ -206,21 +246,25 @@ function nuevoEscenario(nivel) {
 	personaje.y=0;
 	personaje.vx=0; // Velocidad horizontal
 	personaje.vy=0; // Velocidad vertical
+
 	if (nivel==1) {
 			malvado.x = terrenoDeJuego.width-malvado.w*2;
 			malvado.y = terrenoDeJuego.height-malvado.h;
 			premio.x=terrenoDeJuego.width-premio.w;
 			premio.y=10;
+			supersalto.x=-100;	// Fuera de la pantalla
+			supersalto.y=-100;
 			// Crear plataformas
 			plataformas.push(new creaPlataforma(0, 200, 300, 40));
 			plataformas.push(new creaPlataforma(300, 240, 200, 40));
-			plataformas.push(new creaPlataforma(500, 200, 200, 40));
-			plataformas.push(new creaPlataforma(900,250,150,40));
-			plataformas.push(new creaPlataforma(terrenoDeJuego.width-100, 200, 100, 40));
+			plataformas.push(new creaPlataforma(500, 210, 200, 40));
+			plataformas.push(new creaPlataforma(850,250,150,40));
+			plataformas.push(new creaPlataforma(terrenoDeJuego.width-100, 220, 100, 40));
 			plataformas.push(new creaPlataforma(0, terrenoDeJuego.height-25, terrenoDeJuego.width, 25));
 			// Gravedad
 			fuerzas.gravedad=1;
 			fuerzas.rozamiento=0.02;
+			fuerzas.potenciaSalto=70;
 	}
 	if (nivel==2) {
 		personaje.w-=20;
@@ -231,15 +275,24 @@ function nuevoEscenario(nivel) {
 		premio.y=10;
 		premio.h-=10;
 		premio.w-=10;
+		supersalto.x=140;
+		supersalto.y=terrenoDeJuego.height-supersalto.h-40;
 		// Crear plataformas
 		plataformas.push(new creaPlataforma(0, 200, 300, 30));
 		plataformas.push(new creaPlataforma(300, 240, 200, 30));
 		plataformas.push(new creaPlataforma(500, 200, 100, 30));
+		plataformas.push(new creaPlataforma(800, 450, 100, 30));
+		plataformas.push(new creaPlataforma(900, 420, 70, 30));
+		plataformas.push(new creaPlataforma(950, 390, 50, 30));
+		plataformas.push(new creaPlataforma(1000, 360, 50, 30));
+		plataformas.push(new creaPlataforma(1050, 330, 50, 30));
+		plataformas.push(new creaPlataforma(950, 290, 50, 30));
 		plataformas.push(new creaPlataforma(terrenoDeJuego.width-150, 250, 50, 20));
 		plataformas.push(new creaPlataforma(0,terrenoDeJuego.height-25, terrenoDeJuego.width, 25));
 		// Gravedad
 		fuerzas.gravedad=2;
 		fuerzas.rozamiento=0.01;
+		fuerzas.potenciaSalto=50;
 	}
 	if (nivel==3) {
 		malvado.h+=5;
@@ -259,6 +312,7 @@ function nuevoEscenario(nivel) {
 		// Gravedad
 		fuerzas.gravedad+=2;
 		fuerzas.rozamiento/=10;
+		fuerzas.potenciaSalto=50;
 	}
 	msjUsuario("Nivel "+nivel);
 }
@@ -313,7 +367,7 @@ function pulsaTecla(e) {
 				break;
 			case 38:
 				// Flecha arriba
-				personaje.vy=-60; // Suficiente como para subirse a una plataforma
+				personaje.vy=-fuerzas.potenciaSalto; // Suficiente como para subirse a una plataforma
 				break;
 			default:
 				// msjUsuario("Sólo valen las fechas y tú has pulsado "+e.keyCode)
@@ -345,8 +399,13 @@ function dibuja() {
 	ctxMalvado.drawImage(malvado.img, malvado.x, malvado.y, malvado.w, malvado.h);
 	//ctx.rotate(-1);
 
+	// Si se ha movido el supersalto o el premio de sitio hay que redibujar
+	ctxPremio.clearRect(0, 0, terrenoDeJuego.width, terrenoDeJuego.height); // Optimizable
+
 	//ctx.fillRect(premio.x, premio.y, premio.w, premio.h);
-	ctx.drawImage(premio.img, premio.x, premio.y, premio.w, premio.h);
+	ctxPremio.drawImage(premio.img, premio.x, premio.y, premio.w, premio.h);
+
+	ctxPremio.drawImage(supersalto.img, supersalto.x, supersalto.y, supersalto.w, supersalto.h);
 
 }
 
@@ -364,6 +423,12 @@ function accion() {
 	if (colision_premio()) {
 		gameOver('P');
 		nivel++;
+	}
+
+	if (colision_supersalto()) {
+		fuerzas.potenciaSalto*=2;
+		//supersalto.x=-100; // Fuera de la pantalla
+		supersalto.x-=100; // Si queda dentro de la pantalla tendrá un segundo supersalto
 	}
 
 	if (sobre_una_plataforma()) {
@@ -417,6 +482,16 @@ function colision_plataformas() {
 
 function colision_malvado() {
 	return colision_perfecta(personaje, malvado, ctxPersonaje, ctxMalvado);
+}
+
+
+function colision_premio() {
+	//return colision_rectangular(personaje, premio);
+	return colision_perfecta(personaje, premio, ctxPersonaje, ctxPremio);
+}
+
+function colision_supersalto() {
+	return colision_perfecta(personaje, supersalto, ctxPersonaje, ctxPremio);
 }
 
 function colision_perfecta(a, b, ctxA, ctxB) {
@@ -481,10 +556,6 @@ function colision_perfecta(a, b, ctxA, ctxB) {
 function colision_rectangular(a, b) {
 	return a.x<=b.x+b.w && a.x+a.w>=b.x	// Colisión en eje X
 	    && a.y<=b.y+b.h && a.y+a.h>=b.y // Colisión en eje Y
-}
-
-function colision_premio() {
-	return colision_rectangular(personaje, premio);
 }
 
 function sobre_una_plataforma() {

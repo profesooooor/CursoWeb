@@ -1,4 +1,4 @@
-dibuja y arrastra 3.
+dibuja multitáctil.
 
 Nombres originales de los archivos:
 leccion8_3_pointerEvents.html
