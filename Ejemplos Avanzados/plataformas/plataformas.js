@@ -71,6 +71,8 @@ var
 	escenarioPendiente,
 	juegoParado;
 
+var ndepu=0;
+
 window.onload = function () {
 	prepararElTerreno();
 	prepararPersonaje();
@@ -502,6 +504,7 @@ function colision_perfecta(a, b, ctxA, ctxB) {
 	*/
 	var col={};
 	if (!colision_rectangular(a, b)) return false;
+	//msjDepura("hay colisión rectangular "+(++ndepu));
 	/*
 	  Hay una colisión rectangular, es decir, que el rectángulo que reodea a cada
 		una de las dos figuras toca con el de la otra figura.
