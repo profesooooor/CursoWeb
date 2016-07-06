@@ -35,8 +35,9 @@ window.onload = function () {
 }
 
 function inicia_artista() {
-  ctxfondo.fillStyle="#FF5555";
+  ctxfondo.fillStyle="#d8da3d";
   ctxfondo.fillRect(0, 0, fondo.width, fondo.height);
+  ctxfondo.lineWidth=3;
   x=fondo.width/2;
   y=fondo.height/2;
   ang=0;
