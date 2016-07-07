@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <!--
-	Comentarios:
-		- viewport nos permite que todo se adapte en tiempo real al tamaño de la ventana.
-		  Aquí se utiliza en el canvas y en la paleta.
-		- pep.js permite utilizar todos los navegadores con todos los tipos de dispositivos
-		  apuntadores (ratón, pluma y pantalla táctil)
+	Importante:
+		- viewport permite hacer un diseño adaptable al tamaño de la ventana en
+		  tiempo real (real time responsive design), pero si pusiéramos el tamaño
+			del canvas con unidades viewport (vw, vh) perdería mucha calidad (por
+			el escalado automático) y perderíamos el control de dónde ocurre cada
+			evento táctil. Sin embargo, no hay problemas asociados a hacer la paleta
+			de un tamaño adaptativo.
 	Cosas pendientes de hacer:
-		- cargar imágenes de los botes con mejor resolución, si la ventana tiene baja resolución
+	  - cargar imágenes de los botes de menor resolución, si la ventana tiene
+		  baja resolución
 		- poner una fuente alternativa para cuando no esté disponible la Indie Flower
 -->
 <html>
@@ -15,9 +18,8 @@
 		<title>Bote de Pintura</title>
 		<!-- El favicon no funciona en Edge, al menos en local -->
 		<link rel="icon" href="favicon.ico" type="image/x-icon">
-
-		<meta name="viewport" content="width=device-width">
     <!-- <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script> -->
+		<meta name="viewport" content="width=device-width">
 		<script src="pep.js"></script>
 		<script type="text/javascript" src="BotePintura.js"> </script>
 
@@ -29,16 +31,17 @@
 	       border: #000 solid 2px;
 	 	 		 background-color: rgba(50,50,0,0.5);
 	       position: absolute;
-	       top: 20vh;//0px;
-	       left: 15vw; //850px; //Me gustaría que fuera relativo al margen derecho.
+	       top: 20vh; //200px;
+	       left: 10vw; //850px; //Me gustaría que fuera relativo al márgen derecho.
       }
 			#paleta img {
 				width: 4vw;
 			}
       img:hover {
 				padding: 5px;
-				/*background-color:"red";*/
+				background-color:"red";
 			}
+
 			footer {
 				font-family: 'Indie Flower', cursive;
 		    font-weight: bold;
@@ -50,10 +53,10 @@
 </head>
 <body>
     <!-- <h1> Bote de pintura </h1> -->
-		<canvas style="height: 90vh; width:95vw; border: #000 solid 3px; " touch-action="none" >
+    <canvas width="800" height="500" style="border: #000 solid 3px; " id="objeto" touch-action="none" >
     </canvas>
 		<div id="paleta" touch-action="none">
-				<img id="arrastrar" src="assets/arrastrar.png" style="width: 7vw">
+				<img id="arrastrar" src="assets/arrastrar.png" style="width: 8vw">
 				<img id="boteAzul" src="assets/boteAzul.png">
 				<img id="boteRojo" src="assets/boteRojo.png">
 				<img id="boteVerde" src="assets/boteVerde.png">
