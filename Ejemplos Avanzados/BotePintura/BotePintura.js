@@ -20,8 +20,7 @@ var strokes = []; // Cada uno de los toques simultáneos
 function init() {
   canvas = document.querySelector('canvas');
   canvas.width=document.body.clientWidth;
-  alert("clientHeight");
-  document.querySelector("footer").innerHTML="clientHeight";
+  //document.querySelector("footer").innerHTML="clientHeight";
   canvas.height=document.body.clientHeight;
   //canvas.height=window.innerHeight-50;
   ctx = canvas.getContext("2d");

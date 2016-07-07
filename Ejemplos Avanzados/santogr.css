@@ -72,11 +72,13 @@
         nav {
             width: auto;
         }
+        /* Pasamos el contenido encima del menú */
         .contenido {
           order: -1;
           width: auto;
         }
         aside {
-            width: auto;
+            //width: auto;
+            display: none;
         }
     }
