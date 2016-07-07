@@ -1,5 +1,8 @@
 dibuja multitáctil.
 
+
+Es la solución al ejercicio leccion8_1_mouseEvents 
+
 Nombres originales de los archivos:
 leccion8_3_pointerEvents.html
 leccion8_3_pointerEvents.js

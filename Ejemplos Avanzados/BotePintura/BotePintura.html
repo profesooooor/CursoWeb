@@ -1,57 +1,67 @@
 <!DOCTYPE html>
 <!--
+	Comentarios:
+		- viewport nos permite que todo se adapte en tiempo real al tamaño de la ventana.
+		  Aquí se utiliza en el canvas y en la paleta.
+		- pep.js permite utilizar todos los navegadores con todos los tipos de dispositivos
+		  apuntadores (ratón, pluma y pantalla táctil)
 	Cosas pendientes de hacer:
-		- cargar una imagen de menor resolución, si la ventana tiene baja resolución
+		- cargar imágenes de los botes con mejor resolución, si la ventana tiene baja resolución
 		- poner una fuente alternativa para cuando no esté disponible la Indie Flower
 -->
 <html>
-	<head>
+<head>
 		<meta charset="UTF-8">
 		<title>Bote de Pintura</title>
 		<!-- El favicon no funciona en Edge, al menos en local -->
 		<link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script> -->
+
 		<meta name="viewport" content="width=device-width">
+    <!-- <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script> -->
 		<script src="pep.js"></script>
 		<script type="text/javascript" src="BotePintura.js"> </script>
 
-<link
-href="http://fonts.googleapis.com/css?family=Indie+Flower"
-rel="stylesheet" type="text/css">
+		<link href="http://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet" type="text/css">
 
 		<style type="text/css">
 
-footer {
-font-family: 'Indie Flower', cursive;
-    font-weight: bold;
-background-color: #ffccff;
-text-align: center;
-}
+      #paleta{
+	       border: #000 solid 2px;
+	 	 		 background-color: rgba(50,50,0,0.5);
+	       position: absolute;
+	       top: 20vh;//0px;
+	       left: 15vw; //850px; //Me gustaría que fuera relativo al margen derecho.
+      }
+			#paleta img {
+				width: 4vw;
+			}
+      img:hover {
+				padding: 5px;
+				/*background-color:"red";*/
+			}
+			footer {
+				font-family: 'Indie Flower', cursive;
+		    font-weight: bold;
+				background-color: #ffccff;
+				text-align: center;
+			}
 
-        #paleta{
-           border: #000 solid 2px;
-	   background-color: rgba(50,50,0,0.5);
-           position: absolute;
-           top: 200px;
-           left: 850px; //Me gustaría que fuera relativo al márgen derecho.
-        }
-        img:hover {padding: 5px; background-color:"red"}
     </style>
-    </head>
+</head>
 <body>
     <!-- <h1> Bote de pintura </h1> -->
-    <canvas width="800" height="500" style="border: #000 solid 3px; " id="objeto" touch-action="none" >
+		<canvas style="height: 90vh; width:95vw; border: #000 solid 3px; " touch-action="none" >
     </canvas>
 		<div id="paleta" touch-action="none">
-				<img id="arrastrar" src="assets/arrastrar.png" width=100>
-				<img id="boteAzul" src="assets/boteAzul.png" width=100>
-				<img id="boteRojo" src="assets/boteRojo.png" width=100>
-				<img id="boteVerde" src="assets/boteVerde.png" width=100>
-				<img id="muelle" src="assets/muelle.png" width=50>
-				<img id="mas" src="assets/mas.png" width=50>
-				<img id="menos" src="assets/menos.png" width=50>
+				<img id="arrastrar" src="assets/arrastrar.png" style="width: 7vw">
+				<img id="boteAzul" src="assets/boteAzul.png">
+				<img id="boteRojo" src="assets/boteRojo.png">
+				<img id="boteVerde" src="assets/boteVerde.png">
+				<img id="muelle" src="assets/muelle.png">
+				<img id="mas" src="assets/mas.png">
+				<img id="menos" src="assets/menos.png">
 		</div>
-		<footer>Puedes arrastrar la barra de herramientas, cambiar el color, poner en modo muelle, ampliar y reducir.</footer>
+		<footer>Dibuja con todos los dedos. Puedes arrastrar la barra de herramientas, cambiar el color, poner en modo muelle, ampliar y reducir.</footer>
 
 </body>
 </html>

@@ -19,9 +19,9 @@ var strokes = []; // Cada uno de los toques simultáneos
 
 function init() {
   canvas = document.querySelector('canvas');
-  canvas.width=document.body.clientWidth;
+  // canvas.width=document.body.clientWidth;
   //canvas.height=document.body.clientHeight;
-  canvas.height=window.innerHeight-50;
+  // canvas.height=window.innerHeight-50;
   ctx = canvas.getContext("2d");
 
   // Set the default line style.
@@ -39,20 +39,12 @@ function init() {
   if (paleta.offsetLeft>window.innerWidth) {
     paleta.style.left="50px";
   }
-  /*
-  paleta.addEventListener('pointermove', function(event) {
-      paleta.style.left = event.pageX-paleta.clientWidth/2 + 'px';
-      paleta.style.top = event.pageY-paleta.clientHeight/2 + 'px';
-    }, false);
-  */
 
   arrastrar=document.getElementById("arrastrar");
   arrastrar.addEventListener('pointermove', function (event) {
     paleta.style.left = event.pageX-arrastrar.clientWidth/2-arrastrar.offsetLeft + 'px';
     paleta.style.top = event.pageY-arrastrar.clientHeight/2-arrastrar.offsetTop + 'px';
     }, false);
-
-//document.getElementById("escribe").innerHTML="paleta.left";
 
   boteAzul=document.getElementById("boteAzul");
   boteAzul.addEventListener('pointerdown', function (event) {
