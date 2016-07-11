@@ -1,6 +1,8 @@
 /*
 	plataformas.js
 	Poblemas conocidos:
+	  - si el navegador es Chrome no debe utilizarse la colision_exacta() porque el método getImageData()
+		  da error. En tal caso, habría que utilizar colision_rectangular() sin más.
 		- colision_exacta() debe mejorarse, pues ahora sólo se detecta con colisiones del mismo
 		  color, pero un azul puro con un verde puro no chocarían
 		- sólo se puede jugar en pantalla grande, porque no es escalable
@@ -145,7 +147,9 @@ function prepararPersonaje() {
 		personaje.imgDerecho.src='snippets/goomba.png';
 		personaje.imgReves = new Image();
 		personaje.imgReves.src='snippets/goombar.png'
+
 		personaje.img = personaje.imgDerecho;
+
 		// personaje.x=0;
 		// personaje.y=0;
 		// personaje.vx=0; // Velocidad horizontal
@@ -190,7 +194,7 @@ function prepararMalvado() {
 		}
 }
 
-function prepararPremio() {
+function prepararPremio() { // Y SUPERSALTO, que va en el mismo "canvas"
 	// Sprite "premio"
 	var canvaspr = document.createElement("canvas");
 	canvaspr.id = "canvaspr";
@@ -504,7 +508,7 @@ function colision_perfecta(a, b, ctxA, ctxB) {
 	*/
 	var col={};
 	if (!colision_rectangular(a, b)) return false;
-	//msjDepura("hay colisión rectangular "+(++ndepu));
+	// msjDepura("hay colisión rectangular "+(++ndepu));
 	/*
 	  Hay una colisión rectangular, es decir, que el rectángulo que reodea a cada
 		una de las dos figuras toca con el de la otra figura.
