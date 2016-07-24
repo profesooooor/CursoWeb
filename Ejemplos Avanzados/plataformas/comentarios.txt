@@ -1,0 +1,2 @@
+Aunque da error en Chrome trabajando en local (no funciona la "colisión perfecta"), en la web funciona bien.
+Es un problema de seguridad que da un falso positivo.

@@ -1,11 +1,14 @@
 /*
 	plataformas.js
 	Poblemas conocidos:
-	  - si el navegador es Chrome no debe utilizarse la colision_exacta() porque el método getImageData()
-		  da error. En tal caso, habría que utilizar colision_rectangular() sin más.
+	  - si el navegador es Chrome y se ejecuta localmente, getImageData() da error
+		  de seguridad y se interrumpe la ejecución. Por eso, si pudiera detectar
+			navegador Chrome + ejecución local, utilizaría colision_rectangular() sin más.
 		- colision_exacta() debe mejorarse, pues ahora sólo se detecta con colisiones del mismo
-		  color, pero un azul puro con un verde puro no chocarían
-		- sólo se puede jugar en pantalla grande, porque no es escalable
+		  color, pero un azul puro con un verde puro no chocarían. Esto se podría
+			comprobar utilizando como imagen de "personaje" y de "premio" o "enemigo"
+			BolaAmarilla.png y los demás de la carpeta "Para depurar".
+		- sólo se puede jugar en pantalla grande, porque no es escalable (de momento)
 	Mejoras (de más a menos importante):
 		- mejorar el interés del juego (que den más ganas de jugar):
 			- figura que potencie los saltos (supersaltos). Puede estar en el mismo canvas que los premios.
@@ -21,17 +24,19 @@
 			- cada plataforma podría tener un factor de rozamiento y de salto diferentes.
 		- jugabilidad:
 			- tactilidad. Se tiene que poder jugar sin teclado.
+			  Se suele poner dibujado un botón de ir a la izquierda, uno a la derecha y uno de saltar.
 		- dibuja():
-			- utilizar imágenes SVG animadas. En openclipart contamos con "emoji" y "animated" (éstas
-		    incluyen ya el código de animación)
+		  - imágenes:
+				- animar al personaje (posible uso de sprite sheets)
+				- que el personaje lleve accesorios cuando corresponda: muelle, alas
+				  paracaídas o propulsores al caer, un escudo protector que lo salva de
+					una pequeña colisión, botas que lo lastran, ...
 			- mostrar el nivel de una forma más vistosa
 			- añadir animación de cuando toca al malvado. Podría ser una animación parecida a la que se
 			  produce en pong_cssdeck.js cuando la pelota toca una paleta.
 			- que las plataformas sean más vistosas, con textura
-		  - que, en un nivel, haya un fondo móvil (imagen que se mueve)
-			- que el personaje se mueva con varios fotogramas (pueden sacarse de un gif), es decir,
-			  moviendo los pies
-			- utilizar imágenes de tipo svg (animated svg)
+		  - que, en un nivel, haya un fondo móvil (imagen que se mueve) (parallax)
+
 		- accion():
 			- que el malvado crezca con el tiempo
 			- que el usuario pueda jugar con función táctil:

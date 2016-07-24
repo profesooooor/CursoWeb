@@ -18,6 +18,7 @@ var stroke = null;
 var strokes = []; // Cada uno de los toques simultáneos
 
 function init() {
+
   canvas = document.querySelector('canvas');
   canvas.width=document.body.clientWidth;
   //document.querySelector("footer").innerHTML="clientHeight";

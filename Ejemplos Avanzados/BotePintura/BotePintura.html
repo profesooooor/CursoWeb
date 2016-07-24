@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <!--
+	A mejorar:
+		- que pase automáticamente a pantalla completa.
 	Importante:
 		- viewport permite hacer un diseño adaptable al tamaño de la ventana en
 		  tiempo real (real time responsive design), pero si pusiéramos el tamaño
@@ -7,10 +9,6 @@
 			el escalado automático) y perderíamos el control de dónde ocurre cada
 			evento táctil. Sin embargo, no hay problemas asociados a hacer la paleta
 			de un tamaño adaptativo.
-	Cosas pendientes de hacer:
-	  - cargar imágenes de los botes de menor resolución, si la ventana tiene
-		  baja resolución
-		- poner una fuente alternativa para cuando no esté disponible la Indie Flower
 -->
 <html>
 <head>
@@ -31,8 +29,8 @@
 	       border: #000 solid 2px;
 	 	 		 background-color: rgba(50,50,0,0.5);
 	       position: absolute;
-	       top: 20vh; //200px;
-	       left: 10vw; //850px; //Me gustaría que fuera relativo al márgen derecho.
+	       top: 20vh;
+	       left: 10vw;
       }
 			#paleta img {
 				width: 6vw;

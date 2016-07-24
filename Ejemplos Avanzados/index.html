@@ -9,13 +9,29 @@
     <link rel="stylesheet" type="text/css" href="menuv.css">
     <script>
     function ayuda(opc) {
-      var texto = {"crono": "Cronómetro táctil con múltiples paradas.",
-        "artista": "Aplicación para probar el código generado por el Artista de studio.code.org",
-        "dibu1": "Aplicación de dibujo multitáctil con JavaScript puro (sin jQuery ni peps).",
-        "dibu3": "Aplicación de dibujo multitáctil con peps.js para la máxima compatibilidad.",
-        "pintura": "Bote de pintura.",
-        "plataformas": "Juego de plataformas.",
-        "reloj": "Reloj SVG."};
+      var texto = {
+        "pintura": "Bote de pintura. <br><br> Pruébalo. Te encantará.",
+        "artista": "Studio Artista. <br><br>Aplicación para probar el código generado por el Artista de studio.code.org",
+        "crono": "Cronómetro táctil con múltiples paradas.<br><br> \
+                  Se trata de una aplicación táctil que utiliza las bibliotecas \
+                  touch.js y zepto.min.js para emplear eventos táctiles. \
+                  A las bibliotecas se las llama en modo local para que funcione \
+                  incluso sin acceso a Internet.",
+        "dibu1": "Aplicación de dibujo multitáctil con JavaScript puro. <br><br> \
+                  App táctil que funciona en Windows 10 (no la he probado en Android aún).\
+                  Permite arrastrar un objeto por la pantalla y también dibujar \
+                  con hasta 10 dedos al mismo tiempo, pero no con ratón ni pluma. ",
+        "dibu3": "Aplicación de dibujo multitáctil con la máxima compatibilidad. <br><br> \
+                  Gracias a la utilización del <i>polyfill</i> peps.js funciona \
+                  con eventos táctiles (sin tener que configurar ningún navegador) \
+                  y también con ratón y pluma.",
+        "plataformas": "Juego de plataformas. <br><br> Sin terminar.",
+        "reloj": "Reloj SVG. <br><br> \
+                  Utilización de JavaScript para mostrar la hora con un gráfico SVG. \
+                  Esta aplicación está para poderse instalar en FirefoxOS (hosted). \
+                  Se debería preparar un 'manifest' diferente \
+                  para poderse instalar como un complemento de Chrome o como una App de Android."
+      };
       document.getElementById("escribe").innerHTML=texto[opc];
     }
     </script>
@@ -38,30 +54,32 @@
               </ul>
             </nav>
             <div class="contenido">
-                <article>
+              <article>
                 Este es el contenido de "Ejemplos Avanzados", que se publica en http://profesooooor.esy.es/.
-                Este mismo "index.html" ya es un ejemplo, pues es una página web diseñada con los
-                elementos HTML5 "modernos": header, footer, ...
-                Además, utiliza el modelo de diseño de caja flexible.
-                </article>
-                <article>
+                La página que estás viendo (index.html y un par de archivos css) es en sí misma un ejemplo
+                avanzado, pues está diseñada con los elementos HTML5 "modernos": header, footer, article, aside, ...
+              </article>
+              <article>
+                Además, utiliza el modelo de diseño de <b>caja flexible</b>, un recurso CSS que facilita el
+                diseño de páginas web que se adaptan al tamaño de la ventana con conforme cambia (si estás en un ordenador,
+                haz más grande o más pequeña la ventana del navegador y verás cómo el menú cambia de sitio. Si estás
+                con un móvil o tableta, gíralo.
+              </article>
+              <article>
                   Este diseño se utiliza mucho y está explicado en más de
                   <a href="https://developer.mozilla.org/es/docs/Web/CSS/CSS_Flexible_Box_Layout/Usando_las_cajas_flexibles_CSS">un sitio</a>
                 .
-                Esta página respeta las etiquetas header, article, etc.
-                  Lo único que no está bien es el h1 inicial, que debería estar en el "header".
-                </article>
-                <article>
-                  Si estás en un ordenador, reduce el tamaño de la ventana y verás cómo se adapta.
-                  Si estás en un móvil, gíralo.
-                </article>
+              </article>
+              <article>
+                Si tienes ratón, sitúalo encima de cada opción del menú para ver una breve descripción.
+              </article>
                 <br><br>
                 <article id="escribe">
                 </article>
             </div>
-            <aside>aside (anuncios)</aside>
+            <aside>HTML5, CSS y JavaScript</aside>
         </div>
-        <footer> Todo está en construcción </footer>
+        <footer> Sitio web en construcción </footer>
     </div>
   </body>
 </html>
