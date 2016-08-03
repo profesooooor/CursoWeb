@@ -4,6 +4,9 @@
 	  - si el navegador es Chrome y se ejecuta localmente, getImageData() da error
 		  de seguridad y se interrumpe la ejecución. Por eso, si pudiera detectar
 			navegador Chrome + ejecución local, utilizaría colision_rectangular() sin más.
+			El equipo de PHASER.JS recomienda instalar un servidor web local para ejecutar
+			con el protocolo http en lugar de ftp. Yo, para eso, prefiero publicar y
+			probar en la web.
 		- colision_exacta() debe mejorarse, pues ahora sólo se detecta con colisiones del mismo
 		  color, pero un azul puro con un verde puro no chocarían. Esto se podría
 			comprobar utilizando como imagen de "personaje" y de "premio" o "enemigo"
@@ -11,8 +14,6 @@
 		- sólo se puede jugar en pantalla grande, porque no es escalable (de momento)
 	Mejoras (de más a menos importante):
 		- mejorar el interés del juego (que den más ganas de jugar):
-			- figura que potencie los saltos (supersaltos). Puede estar en el mismo canvas que los premios.
-			  Al principio de cada nivel los saltos volverían a ser "estándar".
 			- que se puedan añadir algunas cosas tocando la pantalla. Donde tocas pones un bono se supersaltos
 			- probar el rendimiento en un móvil*
 			- añadir un pájaro/cuervo (como en varioscanvas.html) que sobrevuela cuando te mueres
@@ -101,6 +102,7 @@ window.onload = function () {
 
 	// Órdenes del usuario
 	window.addEventListener('keydown', pulsaTecla, true);
+	prepararPaletaControles();
 }
 
 function prepararElTerreno() {
@@ -149,9 +151,9 @@ function prepararPersonaje() {
 		// Crear el personaje, que es un "sprite"
 		personaje = new Object();
 		personaje.imgDerecho = new Image();
-		personaje.imgDerecho.src='snippets/goomba.png';
+		personaje.imgDerecho.src='assets/goomba.png';
 		personaje.imgReves = new Image();
-		personaje.imgReves.src='snippets/goombar.png'
+		personaje.imgReves.src='assets/goombar.png'
 
 		personaje.img = personaje.imgDerecho;
 
@@ -185,7 +187,7 @@ function prepararMalvado() {
 
 		malvado = new Object();
 		malvado.img = new Image();
-		malvado.img.src = "snippets/malvado.png";
+		malvado.img.src = "assets/malvado.png";
 		// malvado.y = terrenoDeJuego.height-100;
 		ipc++;
 		malvado.img.onload = function () {
@@ -216,7 +218,7 @@ function prepararPremio() { // Y SUPERSALTO, que va en el mismo "canvas"
 
 	premio = new Object();
 	premio.img = new Image();
-	premio.img.src="snippets/premio.png";
+	premio.img.src="assets/premio.png";
 	// premio.x=terrenoDeJuego.width-100;
 	// premio.y=10;
 	ipc++;
@@ -229,7 +231,7 @@ function prepararPremio() { // Y SUPERSALTO, que va en el mismo "canvas"
 
 	supersalto = new Object();
 	supersalto.img = new Image();
-	supersalto.img.src="snippets/supersalto.svg";
+	supersalto.img.src="assets/supersalto.svg";
 
 	ipc++;
 	supersalto.img.onload = function() {
@@ -240,6 +242,32 @@ function prepararPremio() { // Y SUPERSALTO, que va en el mismo "canvas"
 	}
 
 }
+
+function prepararPaletaControles() {
+	var paleta=document.getElementById("paleta");
+	// paleta.style.left="50px";	// <-- Así cambiaríamos la paleta de sitio
+	// La paleta debe estar encima de todo lo demás, o realmente no estaremos
+	// pulsando sobre ella.
+	// Aunque podría parecer más lógico poner el zIndex en plataformas.html, si
+	// lo hacemos veremos que no funciona, así que lo ponemos aquí:
+	paleta.style.zIndex=6;
+
+	arrastrar=document.getElementById("arrastrar");
+	arrastrar.addEventListener('pointermove', function (event) {
+		paleta.style.left = event.pageX-arrastrar.clientWidth/2-arrastrar.offsetLeft + 'px';
+		paleta.style.top = event.pageY-arrastrar.clientHeight/2-arrastrar.offsetTop + 'px';
+		}, false);
+
+		izq=document.getElementById("izq");
+	  izq.addEventListener('pointerdown', function (event) { ordenUsuario(37); }, false);
+
+		der=document.getElementById("der");
+	  der.addEventListener('pointerdown', function (event) { ordenUsuario(39); }, false);
+
+		salto=document.getElementById("salto");
+		salto.addEventListener('pointerdown', function (event) { ordenUsuario(38); }, false);		
+}
+
 
 function nuevoEscenario(nivel) {
 	// Si no se han cargado las imágenes no puedo dibujar el nuevo escenario.
@@ -354,7 +382,11 @@ function bucleAnimacion() {
 }
 
 function pulsaTecla(e) {
-		switch (e.keyCode) {
+	ordenUsuario(e.keyCode);
+}
+
+function ordenUsuario(codigoOrden) {
+		switch (codigoOrden) {
 			case 13:
 				// Intro reinicia el juego, si está parado
 				if (juegoParado) {
@@ -381,7 +413,7 @@ function pulsaTecla(e) {
 				personaje.vy=-fuerzas.potenciaSalto; // Suficiente como para subirse a una plataforma
 				break;
 			default:
-				// msjUsuario("Sólo valen las fechas y tú has pulsado "+e.keyCode)
+				// msjUsuario(" Orden no válida "+codigoOrden);
 		}
 }
 
@@ -439,7 +471,8 @@ function accion() {
 	if (colision_supersalto()) {
 		fuerzas.potenciaSalto*=2;
 		//supersalto.x=-100; // Fuera de la pantalla
-		supersalto.x-=100; // Si queda dentro de la pantalla tendrá un segundo supersalto
+		supersalto.x-=100; // Ponemos el "premio" de supersalto más a la izquierda
+										   // Si queda dentro de la pantalla tendrá un segundo supersalto
 	}
 
 	if (sobre_una_plataforma()) {

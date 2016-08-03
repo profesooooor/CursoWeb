@@ -1,2 +1,3 @@
 Aunque da error en Chrome trabajando en local (no funciona la "colisión perfecta"), en la web funciona bien.
 Es un problema de seguridad que da un falso positivo.
+Es por este tipo de problemas por lo que los de PHASER.JS recomiendan instalarse un servidor web local, pero yo prefiero trabajar con un servidor web en Internet, como Hostinger.

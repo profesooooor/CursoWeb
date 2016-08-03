@@ -43,3 +43,19 @@ h1 {
   background-color: rgb(255,0,0);
 }
 */
+
+#paleta {
+   border: #000 solid 2px;
+   background-color: rgba(50,50,0,0.5);
+   position: absolute;
+   top: 65vh;
+   left: 20vw;
+}
+
+#paleta img {
+  width: 10vw;
+}
+#paleta img:hover {
+  padding: 5px;
+  background-color:"red";
+}

@@ -21,12 +21,10 @@ function init() {
 
   canvas = document.querySelector('canvas');
   canvas.width=document.body.clientWidth;
-  //document.querySelector("footer").innerHTML="clientHeight";
   canvas.height=document.body.clientHeight;
   //canvas.height=window.innerHeight-50;
   ctx = canvas.getContext("2d");
 
-  // Set the default line style.
   ctx.lineWidth = 1;
   ctx.lineCap = "round";
   ctx.fillStyle = "#99a7ff";
