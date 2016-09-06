@@ -14,6 +14,9 @@
 		- sólo se puede jugar en pantalla grande, porque no es escalable (de momento)
 	Mejoras (de más a menos importante):
 		- mejorar el interés del juego (que den más ganas de jugar):
+		  - en el nivel 3 que se muevan las plataformas horizontalmente
+			- en el nivel 4 que se muevan las plataformas verticalmente
+			- en el nivel 5 que se mueva el malvado hacia nuestro personaje
 			- que se puedan añadir algunas cosas tocando la pantalla. Donde tocas pones un bono se supersaltos
 			- probar el rendimiento en un móvil*
 			- añadir un pájaro/cuervo (como en varioscanvas.html) que sobrevuela cuando te mueres
@@ -24,25 +27,31 @@
 			- podría tener una velocidad máxima
 			- cada plataforma podría tener un factor de rozamiento y de salto diferentes.
 		- jugabilidad:
-			- tactilidad. Se tiene que poder jugar sin teclado.
-			  Se suele poner dibujado un botón de ir a la izquierda, uno a la derecha y uno de saltar.
+			- al morir o terminar un nivel debe ser posible seguir SIN PULSAR INTRO
+		- experimentar otra manera de jugar con función táctil:
+			- izquierda es pulsar a la izquierda del personaje
+			- pulsar sobre el personaje provoca que salte
+			- pulsar sobre ciertos objetos con el dedo ofrecen puntos o accesorios
 		- dibuja():
+			- animar el mensaje de fin de nivel con CSS
 		  - imágenes:
 				- animar al personaje (posible uso de sprite sheets)
 				- que el personaje lleve accesorios cuando corresponda: muelle, alas
 				  paracaídas o propulsores al caer, un escudo protector que lo salva de
-					una pequeña colisión, botas que lo lastran, ...
+					una pequeña colisión, botas que lo lastran, ... aunque lo ideal es que
+					los lleve encima, podría haber una zona de la pantalla en la que se
+					vieran los accesorios (mochila)
 			- mostrar el nivel de una forma más vistosa
 			- añadir animación de cuando toca al malvado. Podría ser una animación parecida a la que se
 			  produce en pong_cssdeck.js cuando la pelota toca una paleta.
 			- que las plataformas sean más vistosas, con textura
-		  - que, en un nivel, haya un fondo móvil (imagen que se mueve) (parallax)
+		  - que, en un nivel, haya un fondo móvil (imagen que se mueve)
+			- que se utilice un efecto parallax (fondos a diferentes velocidades). Por
+			  ejemplo, las plataformas se podrían mover horizontalmente mientras un
+				fondo animado tiene un paisaje que también se mueve
 
 		- accion():
 			- que el malvado crezca con el tiempo
-			- que el usuario pueda jugar con función táctil:
-				- izquierda es pulsar a la izquierda del personaje
-				- pulsar sobre el personaje provoca que salte
 			- que el malvado evolucione (varias imágenes)
 			- que el malvado se mueva
 			- que haya más de un malvado
@@ -50,7 +59,7 @@
   Mejorar la velocidad:
 	  - Redibujar el fondo (y demás figuras estáticas) sólo al principio de cada nivel, no en
 		  cada fotograma. En varioscanvas.html está hecho. Se trata de utilizar ClearRect() para
-			borrar un Sprite antes de moverlo, en lugar de borrar todo su canvas.
+			borrar la zona que ocupa un Sprite antes de moverlo, en lugar de borrar todo su canvas.
 
 
 
@@ -77,7 +86,8 @@ var
 	sonidoPremio,
 	ipc=0,	// Imágenes pendientes de carga
 	escenarioPendiente,
-	juegoParado;
+	juegoParado,
+	paleta;
 
 var ndepu=0;
 
@@ -244,28 +254,37 @@ function prepararPremio() { // Y SUPERSALTO, que va en el mismo "canvas"
 }
 
 function prepararPaletaControles() {
-	var paleta=document.getElementById("paleta");
+	paleta=document.getElementById("paleta");
 	// paleta.style.left="50px";	// <-- Así cambiaríamos la paleta de sitio
-	// La paleta debe estar encima de todo lo demás, o realmente no estaremos
-	// pulsando sobre ella.
+
+	// La paleta debe estar encima de todo lo demás, o no podremos pulsar sobre ella
 	// Aunque podría parecer más lógico poner el zIndex en plataformas.html, si
 	// lo hacemos veremos que no funciona, así que lo ponemos aquí:
 	paleta.style.zIndex=6;
+	paleta.arrastreActivado=false;
 
 	arrastrar=document.getElementById("arrastrar");
+	arrastrar.addEventListener('pointerdown', function (event) {
+		paleta.arrastreActivado=true;
+		}, false);
 	arrastrar.addEventListener('pointermove', function (event) {
-		paleta.style.left = event.pageX-arrastrar.clientWidth/2-arrastrar.offsetLeft + 'px';
-		paleta.style.top = event.pageY-arrastrar.clientHeight/2-arrastrar.offsetTop + 'px';
+		if (paleta.arrastreActivado) {
+			paleta.style.left = event.pageX-arrastrar.clientWidth/2-arrastrar.offsetLeft + 'px';
+			paleta.style.top = event.pageY-arrastrar.clientHeight/2-arrastrar.offsetTop + 'px';
+		}
+		}, false);
+	arrastrar.addEventListener('pointerup', function (event) {
+		paleta.arrastreActivado=false;
 		}, false);
 
-		izq=document.getElementById("izq");
-	  izq.addEventListener('pointerdown', function (event) { ordenUsuario(37); }, false);
+	izq=document.getElementById("izq");
+  izq.addEventListener('pointerdown', function (event) { ordenUsuario(37); }, false);
 
-		der=document.getElementById("der");
-	  der.addEventListener('pointerdown', function (event) { ordenUsuario(39); }, false);
+	der=document.getElementById("der");
+  der.addEventListener('pointerdown', function (event) { ordenUsuario(39); }, false);
 
-		salto=document.getElementById("salto");
-		salto.addEventListener('pointerdown', function (event) { ordenUsuario(38); }, false);		
+	salto=document.getElementById("salto");
+	salto.addEventListener('pointerdown', function (event) { ordenUsuario(38); }, false);
 }
 
 
@@ -424,9 +443,16 @@ function dibuja() {
 	ctx.clearRect(0, 0, terrenoDeJuego.width, terrenoDeJuego.height);
 
 	// Dibujar plataformas
+
+	var grad;
 	for(var i = 0; i < plataformas.length; i++) {
 		p = plataformas[i];
-		ctx.fillStyle = "brown";
+		// ctx.fillStyle = "brown";
+		grad=ctx.createLinearGradient(p.x,p.y,p.x+p.w,p.y+p.h);
+		grad.addColorStop(0,"black");
+		grad.addColorStop(0.5,"red");
+		grad.addColorStop(1, "white");
+		ctx.fillStyle = grad;
 		ctx.fillRect(p.x, p.y, p.w, p.h);
 	}
 
